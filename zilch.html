@@ -1,0 +1,694 @@
+<title>Zilch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ink:#0E1620;
+    --paper:#EEF1F4;
+    --surface:#FFFFFF;
+    --surface-2:#E4E9EE;
+    --line:#C8D2DA;
+    --line-soft:#DCE3E9;
+    --text:#0E1620;
+    --text-2:#4A5A68;
+    --text-3:#738796;
+    --accent:#FFB020;
+    --accent-ink:#8A5300;
+    --ice:#3E86AE;
+    --gain:#1E8A5C;
+    --gain-fill:#35B37E;
+    --loss:#A8402B;
+    --loss-fill:#C8553D;
+    --shadow:0 1px 2px rgba(14,22,32,.06), 0 8px 24px -12px rgba(14,22,32,.18);
+    --radius:3px;
+    --maxw:1120px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0B1219;
+      --surface:#121C26;
+      --surface-2:#18242F;
+      --line:#2A3946;
+      --line-soft:#1E2C38;
+      --text:#E8EEF3;
+      --text-2:#A3B4C1;
+      --text-3:#6F8494;
+      --accent:#FFB020;
+      --accent-ink:#FFC65C;
+      --ice:#8FC9E8;
+      --gain:#4FCB92;
+      --gain-fill:#35B37E;
+      --loss:#E5806A;
+      --loss-fill:#C8553D;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0B1219;
+    --surface:#121C26;
+    --surface-2:#18242F;
+    --line:#2A3946;
+    --line-soft:#1E2C38;
+    --text:#E8EEF3;
+    --text-2:#A3B4C1;
+    --text-3:#6F8494;
+    --accent:#FFB020;
+    --accent-ink:#FFC65C;
+    --ice:#8FC9E8;
+    --gain:#4FCB92;
+    --gain-fill:#35B37E;
+    --loss:#E5806A;
+    --loss-fill:#C8553D;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--paper);
+    color:var(--text);
+    font-family:"IBM Plex Sans","Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  h1,h2,h3{margin:0;text-wrap:balance}
+  p{margin:0}
+  a{color:inherit}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+  .eyebrow{
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    font-weight:600;color:var(--text-3);
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead{
+    border-bottom:1px solid var(--line);
+    background:var(--surface);
+  }
+  .masthead-in{
+    max-width:var(--maxw);margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  }
+  .wordmark{
+    font-family:Anton,Impact,"Arial Narrow Bold",sans-serif;
+    font-size:26px;letter-spacing:.02em;line-height:1;
+    text-transform:uppercase;
+  }
+  .wordmark span{color:var(--accent-ink)}
+  .status{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;color:var(--text-2);
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+  .sitenav{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+  .sitenav a{
+    font-size:13px;font-weight:600;text-decoration:none;padding:7px 13px;
+    color:var(--text-2);border:1px solid transparent;border-radius:3px;
+  }
+  .sitenav a:hover{color:var(--text);border-color:var(--line)}
+  .sitenav a[aria-current="page"]{color:var(--text);background:var(--surface-2);border-color:var(--line)}
+  .sitenav a:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}
+
+  /* ---------- hero ---------- */
+  .hero{padding:72px 0 56px;border-bottom:1px solid var(--line)}
+  .hero h1{
+    font-family:Anton,Impact,sans-serif;
+    text-transform:uppercase;
+    font-size:clamp(46px,9.2vw,116px);
+    line-height:.92;
+    letter-spacing:.005em;
+    margin:18px 0 0;
+  }
+  .hero h1 .strike{position:relative;white-space:nowrap}
+  .hero h1 .strike::after{
+    content:"";position:absolute;left:-.02em;right:-.02em;top:.54em;height:.075em;
+    background:var(--loss-fill);transform:rotate(-2.2deg);
+  }
+  .hero h1 em{font-style:normal;color:var(--accent-ink)}
+  .hero-sub{
+    margin-top:26px;max-width:60ch;font-size:19px;line-height:1.5;color:var(--text-2);
+  }
+  .hero-sub strong{color:var(--text);font-weight:600}
+
+  /* ---------- section ---------- */
+  section{padding:64px 0;border-bottom:1px solid var(--line)}
+  .sec-head{margin-bottom:32px}
+  .sec-head h2{
+    font-family:Anton,Impact,sans-serif;text-transform:uppercase;
+    font-size:clamp(28px,4.2vw,44px);line-height:1;margin-top:10px;
+  }
+  .sec-head p{margin-top:14px;max-width:62ch;color:var(--text-2)}
+
+  /* ---------- calculator ---------- */
+  .calc{
+    background:var(--surface);
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+    display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);
+  }
+  @media (max-width:820px){ .calc{grid-template-columns:1fr} }
+  .calc-controls{padding:28px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:26px}
+  @media (max-width:820px){ .calc-controls{border-right:0;border-bottom:1px solid var(--line)} }
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:2px}
+  .field .hint{font-size:12.5px;color:var(--text-3);margin-bottom:12px}
+  .readout{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-variant-numeric:tabular-nums;
+    font-size:30px;font-weight:600;line-height:1;margin-bottom:12px;
+  }
+  input[type=range]{
+    width:100%;-webkit-appearance:none;appearance:none;background:transparent;height:26px;margin:0;cursor:pointer;
+  }
+  input[type=range]::-webkit-slider-runnable-track{height:4px;background:var(--surface-2);border:1px solid var(--line-soft)}
+  input[type=range]::-moz-range-track{height:4px;background:var(--surface-2);border:1px solid var(--line-soft)}
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;width:20px;height:20px;margin-top:-9px;
+    background:var(--accent);border:2px solid var(--ink);border-radius:50%;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px;height:20px;background:var(--accent);border:2px solid var(--ink);border-radius:50%;
+  }
+  input[type=range]:focus-visible{outline:2px solid var(--accent-ink);outline-offset:4px}
+  .scale{display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-3);margin-top:4px}
+
+  .calc-out{padding:28px;display:flex;flex-direction:column;gap:24px;min-width:0}
+  .bigline .eyebrow{margin-bottom:8px;display:block}
+  .bignum{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-variant-numeric:tabular-nums;
+    font-size:clamp(40px,7.4vw,68px);font-weight:600;line-height:1;
+    color:var(--loss);letter-spacing:-.02em;
+  }
+  .bigcap{margin-top:10px;color:var(--text-2);font-size:14.5px;max-width:48ch}
+
+  .splitbar{display:flex;height:38px;border:1px solid var(--line);overflow:hidden}
+  .splitbar div{display:flex;align-items:center;padding:0 10px;font-size:12px;font-weight:600;color:#0E1620;white-space:nowrap;overflow:hidden;
+    font-family:"IBM Plex Mono",ui-monospace,monospace;transition:flex-basis .35s ease}
+  .seg-keep{background:var(--gain-fill)}
+  .seg-cut{background:var(--loss-fill);color:#fff;justify-content:flex-end}
+
+  .rows{display:flex;flex-direction:column}
+  .row{
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+    padding:11px 0;border-top:1px solid var(--line-soft);
+  }
+  .row:first-child{border-top:0}
+  .row .k{font-size:14.5px;color:var(--text-2)}
+  .row .v{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:15.5px;font-weight:500;white-space:nowrap}
+  .row.total{border-top:1px solid var(--line);margin-top:2px;padding-top:14px}
+  .row.total .k{color:var(--text);font-weight:600;font-size:15.5px}
+  .row.total .v{font-size:20px;font-weight:600;color:var(--gain)}
+  .assump{font-size:12.5px;color:var(--text-3);line-height:1.5;max-width:62ch}
+
+  /* ---------- facts ---------- */
+  .facts{display:flex;flex-direction:column}
+  .fact{
+    display:grid;grid-template-columns:150px minmax(0,1fr);gap:28px;
+    padding:26px 0;border-top:1px solid var(--line-soft);align-items:start;
+  }
+  .fact:first-child{border-top:0;padding-top:0}
+  @media (max-width:700px){ .fact{grid-template-columns:1fr;gap:10px} }
+  .fact-key{
+    font-family:Anton,Impact,sans-serif;text-transform:uppercase;
+    font-size:32px;line-height:.95;color:var(--accent-ink);
+  }
+  .fact h3{font-size:17px;font-weight:600;margin-bottom:7px}
+  .fact p{color:var(--text-2);font-size:15.5px;max-width:60ch}
+
+  /* ---------- minnesota table ---------- */
+  .mn-table{width:100%;border-collapse:collapse;font-size:15px}
+  .mn-table caption{text-align:left;font-size:12.5px;color:var(--text-3);padding-bottom:12px;caption-side:top}
+  .mn-table th{
+    text-align:left;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--text-3);font-weight:600;padding:0 14px 10px 0;border-bottom:1px solid var(--line);
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  .mn-table td{padding:13px 14px 13px 0;border-bottom:1px solid var(--line-soft);vertical-align:top}
+  .mn-table td:last-child,.mn-table th:last-child{padding-right:0}
+  .mn-table .num{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;
+    font-weight:500;white-space:nowrap;
+  }
+  .mn-table td.note{color:var(--text-2);font-size:14px}
+  .tablescroll{overflow-x:auto}
+  .flagbad{color:var(--loss);font-weight:600}
+  .flaggood{color:var(--gain);font-weight:600}
+
+  /* ---------- signal ---------- */
+  .signal{
+    background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);
+  }
+  @media (max-width:820px){ .signal{grid-template-columns:1fr} }
+  .signal-form{padding:28px;display:flex;flex-direction:column;gap:20px}
+  .signal-side{
+    padding:28px;border-left:1px solid var(--line);background:var(--surface-2);
+    display:flex;flex-direction:column;justify-content:center;gap:6px;
+  }
+  @media (max-width:820px){ .signal-side{border-left:0;border-top:1px solid var(--line)} }
+  .count{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;
+    font-size:52px;font-weight:600;line-height:1;color:var(--accent-ink);
+  }
+  .count-lbl{font-size:14px;color:var(--text-2);line-height:1.4}
+  .choice{display:flex;gap:10px;flex-wrap:wrap}
+  .choice button{
+    font:inherit;font-size:14.5px;font-weight:600;padding:11px 18px;cursor:pointer;
+    background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:var(--radius);
+  }
+  .choice button:hover{border-color:var(--text-3)}
+  .choice button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#0E1620}
+  .choice button:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}
+  select,input[type=text]{
+    font:inherit;font-size:15px;padding:10px 12px;width:100%;
+    background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:var(--radius);
+  }
+  select:focus-visible,input:focus-visible{outline:2px solid var(--accent-ink);outline-offset:1px}
+  .submit{
+    font:inherit;font-family:Anton,Impact,sans-serif;text-transform:uppercase;letter-spacing:.04em;
+    font-size:19px;padding:14px 26px;cursor:pointer;align-self:flex-start;
+    background:var(--ink);color:#F7FAFC;border:1px solid var(--ink);border-radius:var(--radius);
+  }
+  :root[data-theme="dark"] .submit{background:var(--accent);color:#0E1620;border-color:var(--accent)}
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]) .submit{background:var(--accent);color:#0E1620;border-color:var(--accent)}
+  }
+  .submit:hover{opacity:.88}
+  .submit:disabled{opacity:.45;cursor:default}
+  .submit:focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px}
+  .msg{font-size:14px;color:var(--text-2);min-height:1.4em}
+
+  /* ---------- footer ---------- */
+  footer{padding:44px 0 64px;color:var(--text-3);font-size:13.5px}
+  footer p{max-width:78ch;margin-bottom:10px;line-height:1.6}
+  footer .disclaim{
+    border-left:2px solid var(--accent);padding-left:14px;color:var(--text-2);
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+
+<header class="masthead">
+  <div class="masthead-in">
+    <div class="wordmark">Zil<span>ch</span></div>
+    <nav class="sitenav">
+      <a href="https://claude.ai/code/artifact/ebe2a515-6433-4327-8772-f73fcf167eb6" aria-current="page">The pitch</a>
+      <a href="https://claude.ai/code/artifact/30296ce3-94af-42db-9aeb-8dee7c301be6">Pledge</a>
+      <a href="https://claude.ai/code/artifact/05074576-3bdf-4867-8ece-0f5c70fdfa1d">Board</a>
+    </nav>
+    <div class="status"><span class="dot" aria-hidden="true"></span>Pre-launch · west metro</div>
+  </div>
+</header>
+
+<main>
+  <div class="hero wrap">
+    <span class="eyebrow">Rides &amp; delivery · one membership</span>
+    <h1>They take <span class="strike">thirty percent</span>.<br>We take <em>zilch</em>.</h1>
+    <p class="hero-sub"><strong>$30 a month.</strong> Rides, food, both — one membership. Every dollar the customer pays goes to the person who did the work.</p>
+  </div>
+
+  <section class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">The number</span>
+      <h2>What did they take from you last year?</h2>
+      <p>Set the take rate to match your own statements. The math is shown below so you can check it.</p>
+    </div>
+
+    <div class="calc">
+      <div class="calc-controls">
+        <div class="field">
+          <label for="gross">Your weekly take-home</label>
+          <p class="hint">What actually lands in your account, before gas and wear.</p>
+          <div class="readout" id="grossOut">$1,100</div>
+          <input type="range" id="gross" min="200" max="3000" step="25" value="1100"
+                 aria-label="Weekly take-home in dollars">
+          <div class="scale"><span>$200</span><span>$3,000</span></div>
+        </div>
+
+        <div class="field">
+          <label for="rate">Platform take rate</label>
+          <p class="hint">Their share of what the customer paid.</p>
+          <div class="readout" id="rateOut">30%</div>
+          <input type="range" id="rate" min="10" max="50" step="1" value="30"
+                 aria-label="Platform take rate percent">
+          <div class="scale"><span>10%</span><span>50%</span></div>
+        </div>
+
+        <div class="field">
+          <label for="weeks">Weeks driven per year</label>
+          <div class="readout" id="weeksOut">50</div>
+          <input type="range" id="weeks" min="10" max="52" step="1" value="50"
+                 aria-label="Weeks driven per year">
+          <div class="scale"><span>10</span><span>52</span></div>
+        </div>
+      </div>
+
+      <div class="calc-out">
+        <div class="bigline">
+          <span class="eyebrow">Taken off the top, one year</span>
+          <div class="bignum" id="taken">$23,571</div>
+          <p class="bigcap" id="takenCap">That is what the platform kept out of the money your customers actually paid — money that moved through your car.</p>
+        </div>
+
+        <div>
+          <div class="splitbar" role="img" aria-label="Split of customer payments between driver and platform" id="bar">
+            <div class="seg-keep" id="segKeep" style="flex-basis:70%">You</div>
+            <div class="seg-cut" id="segCut" style="flex-basis:30%">Them</div>
+          </div>
+        </div>
+
+        <div class="rows">
+          <div class="row"><span class="k">Your customers paid, per year</span><span class="v" id="rGross">$78,571</span></div>
+          <div class="row"><span class="k">You received</span><span class="v" id="rNet">$55,000</span></div>
+          <div class="row"><span class="k">They kept</span><span class="v" id="rCut" style="color:var(--loss)">−$23,571</span></div>
+          <div class="row"><span class="k">Zilch membership, 12 months</span><span class="v">−$360</span></div>
+          <div class="row total"><span class="k">Your raise on the same work</span><span class="v" id="rDelta">+$23,211</span></div>
+        </div>
+
+        <p class="assump">How this is figured: if you take home <span class="mono">N</span> and the platform keeps <span class="mono">t</span> of the customer's payment, the customer paid <span class="mono">N ÷ (1 − t)</span> and the platform kept the rest. Nothing here counts gas, maintenance, depreciation or taxes — those come out of your side either way, on any platform. Minnesota's minimum driver pay floor applies to us exactly as it applies to Uber and Lyft.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Three things, and that's the whole model</h2>
+    </div>
+    <div class="facts">
+      <div class="fact">
+        <div class="fact-key">$30<br>/mo</div>
+        <div>
+          <h3>One fee, whatever you drive</h3>
+          <p>Rides and delivery, same membership. You're already running two apps to do one job. The fee doesn't grow when your week does.</p>
+        </div>
+      </div>
+      <div class="fact">
+        <div class="fact-key">100%</div>
+        <div>
+          <h3>The fare is yours</h3>
+          <p>No commission, no service fee, no surge split. What the rider pays and what you're paid are the same number. We don't earn more when fares rise, so we have no reason to raise them.</p>
+        </div>
+      </div>
+      <div class="fact">
+        <div class="fact-key">Fully<br>covered</div>
+        <div>
+          <h3>Insured to the state standard</h3>
+          <p>Commercial coverage from the moment a trip is accepted. Not a personal policy hoping nobody reads the livery exclusion. This is the corner that never gets cut.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Why here, why now</span>
+      <h2>Minnesota is the best place in America to do this</h2>
+      <p>In 2024 Uber and Lyft threatened to leave Minneapolis over driver pay. The state passed a floor anyway and they stayed. What the fight left behind is a market where drivers know their worth and the rules are already written down.</p>
+    </div>
+
+    <div class="tablescroll">
+      <table class="mn-table">
+        <caption>Minnesota statutory requirements every rideshare network must meet, us included.</caption>
+        <thead>
+          <tr><th scope="col">Requirement</th><th scope="col">Figure</th><th scope="col">What it means for us</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Statewide minimum driver pay</td>
+            <td class="num">$1.28 / mile<br>$0.31 / minute</td>
+            <td class="note">A floor, not a ceiling. Applies to us identically. We compete by not taking a cut on top of it, not by paying less.</td>
+          </tr>
+          <tr>
+            <td>Minimum per trip</td>
+            <td class="num">$5.00</td>
+            <td class="note">Short trips can't be run at a loss for the driver.</td>
+          </tr>
+          <tr>
+            <td>Liability, trip accepted → drop-off</td>
+            <td class="num">$1,500,000</td>
+            <td class="note"><span class="flagbad">The real cost of entry.</span> Higher than most states' $1M. Non-negotiable and it is the main thing standing between an idea and a company.</td>
+          </tr>
+          <tr>
+            <td>Liability, app on, no trip yet</td>
+            <td class="num">$50k / $100k / $30k</td>
+            <td class="note">Per person / per accident / property damage.</td>
+          </tr>
+          <tr>
+            <td>Personal injury protection in-trip</td>
+            <td class="num">$1,000,000</td>
+            <td class="note">State law requires the <em>network</em> to carry this on the driver's behalf, at no cost to the driver. Not something you can push down onto them.</td>
+          </tr>
+          <tr>
+            <td>Minneapolis network license</td>
+            <td class="num">≈ $37,000</td>
+            <td class="note">Per year. A competitor, Joiryde, cited fees like this as the reason it walked away from the market entirely.</td>
+          </tr>
+          <tr>
+            <td>Saint Paul network license</td>
+            <td class="num">≈ $41,000</td>
+            <td class="note">Separate application, separate fee, same year.</td>
+          </tr>
+          <tr>
+            <td>West metro suburbs</td>
+            <td class="num">State law only</td>
+            <td class="note"><span class="flaggood">The opening.</span> Minnetonka, Hopkins, Eden Prairie, St. Louis Park and their neighbours don't run their own licensing regimes. Same state insurance standard, without the $78,000 of city fees — and worse Uber wait times than downtown, which is the actual customer problem.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Before we launch</span>
+      <h2>Tell us you'd switch</h2>
+      <p>No email, no account. It's a headcount — four drivers on an app is worse than none.</p>
+    </div>
+
+    <div class="signal">
+      <div class="signal-form">
+        <div>
+          <span class="eyebrow" style="display:block;margin-bottom:10px">I would use this as a</span>
+          <div class="choice" role="group" aria-label="Choose driver or rider">
+            <button type="button" id="bDriver" aria-pressed="false">Driver</button>
+            <button type="button" id="bRider" aria-pressed="false">Rider or customer</button>
+          </div>
+        </div>
+
+        <div>
+          <label for="city" class="eyebrow" style="display:block;margin-bottom:10px">Closest to</label>
+          <select id="city">
+            <option value="">Choose an area…</option>
+            <option>Minnetonka</option>
+            <option>Hopkins</option>
+            <option>Eden Prairie</option>
+            <option>St. Louis Park</option>
+            <option>Plymouth</option>
+            <option>Maple Grove</option>
+            <option>Wayzata / Excelsior</option>
+            <option>Chanhassen / Chaska</option>
+            <option>Edina</option>
+            <option>Minneapolis</option>
+            <option>Saint Paul</option>
+            <option>U of M campus area</option>
+            <option>Elsewhere in Minnesota</option>
+          </select>
+        </div>
+
+        <div id="driverExtra" hidden>
+          <label for="platforms" class="eyebrow" style="display:block;margin-bottom:10px">What do you drive for now?</label>
+          <select id="platforms">
+            <option value="">Prefer not to say</option>
+            <option>Uber</option>
+            <option>Lyft</option>
+            <option>DoorDash</option>
+            <option>Uber Eats</option>
+            <option>More than one of these</option>
+            <option>Nothing yet — I'd start</option>
+          </select>
+        </div>
+
+        <button class="submit" id="send" disabled>Count me in</button>
+        <p class="msg" id="msg"></p>
+      </div>
+
+      <div class="signal-side">
+        <div class="count" id="count">—</div>
+        <p class="count-lbl" id="countLbl">people counted so far</p>
+        <p class="count-lbl" style="margin-top:14px;color:var(--text-3);font-size:12.5px" id="breakdown"></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p class="disclaim"><strong>Zilch is not operating yet.</strong> Nothing here is a service you can book. This is a pre-launch page measuring whether enough people want it to exist.</p>
+  <p>Figures come from Minnesota Statutes § 65B.472, the state TNC compensation policy effective December 2025, and reported licensing costs in Minneapolis and Saint Paul. Verify before relying on any of it — this is a pitch, not legal advice.</p>
+  <p>The calculator is a model, not your actual earnings. It excludes vehicle costs and taxes.</p>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- calculator ---------- */
+  var gross = document.getElementById("gross");
+  var rate  = document.getElementById("rate");
+  var weeks = document.getElementById("weeks");
+
+  var usd0 = function(n){
+    return "$" + Math.round(n).toLocaleString("en-US");
+  };
+
+  function recalc(){
+    var g = Number(gross.value);          // weekly take-home
+    var t = Number(rate.value) / 100;     // platform share of customer payment
+    var w = Number(weeks.value);
+
+    var annualNet   = g * w;
+    var annualGross = annualNet / (1 - t);
+    var annualCut   = annualGross - annualNet;
+    var fee         = 360;
+    var delta       = annualCut - fee;
+
+    document.getElementById("grossOut").textContent = usd0(g);
+    document.getElementById("rateOut").textContent  = Math.round(t * 100) + "%";
+    document.getElementById("weeksOut").textContent = w;
+
+    document.getElementById("taken").textContent  = usd0(annualCut);
+    document.getElementById("rGross").textContent = usd0(annualGross);
+    document.getElementById("rNet").textContent   = usd0(annualNet);
+    document.getElementById("rCut").textContent   = "−" + usd0(annualCut);
+    document.getElementById("rDelta").textContent = "+" + usd0(delta);
+
+    var keepPct = Math.round((1 - t) * 100);
+    document.getElementById("segKeep").style.flexBasis = keepPct + "%";
+    document.getElementById("segCut").style.flexBasis  = (100 - keepPct) + "%";
+    document.getElementById("segKeep").textContent = "You " + keepPct + "%";
+    document.getElementById("segCut").textContent  = (100 - keepPct) + "% them";
+
+    var perWeek = annualCut / w;
+    document.getElementById("takenCap").textContent =
+      "That's " + usd0(perWeek) + " a week skimmed off money your customers already paid — for the same trips, in the same car, on the same nights.";
+  }
+
+  [gross, rate, weeks].forEach(function(el){
+    el.addEventListener("input", recalc);
+  });
+  recalc();
+
+  /* ---------- signal ---------- */
+  var role = null;
+  var bDriver = document.getElementById("bDriver");
+  var bRider  = document.getElementById("bRider");
+  var citySel = document.getElementById("city");
+  var extra   = document.getElementById("driverExtra");
+  var sendBtn = document.getElementById("send");
+  var msgEl   = document.getElementById("msg");
+  var countEl = document.getElementById("count");
+  var countLb = document.getElementById("countLbl");
+  var breakEl = document.getElementById("breakdown");
+
+  var STORE_KEY = "zilch.counted.v1";
+  var already = false;
+  try { already = localStorage.getItem(STORE_KEY) === "1"; } catch(e){}
+
+  function setRole(r){
+    role = r;
+    bDriver.setAttribute("aria-pressed", String(r === "driver"));
+    bRider.setAttribute("aria-pressed",  String(r === "rider"));
+    extra.hidden = (r !== "driver");
+    refreshBtn();
+  }
+  function refreshBtn(){
+    sendBtn.disabled = already || !role || !citySel.value || !dbReady;
+  }
+  bDriver.addEventListener("click", function(){ setRole("driver"); });
+  bRider.addEventListener("click",  function(){ setRole("rider");  });
+  citySel.addEventListener("change", refreshBtn);
+
+  var db = null;
+  var dbReady = false;
+
+  function renderCounts(docs){
+    var total = docs.length;
+    var drivers = 0;
+    for (var i = 0; i < docs.length; i++){
+      var d = docs[i].data() || {};
+      if (d.role === "driver") drivers++;
+    }
+    countEl.textContent = total.toLocaleString("en-US");
+    countLb.textContent = total === 1 ? "person counted so far" : "people counted so far";
+    breakEl.textContent = total
+      ? drivers + " would drive · " + (total - drivers) + " would ride"
+      : "Be the first.";
+  }
+
+  function noDb(){
+    countEl.textContent = "—";
+    countLb.textContent = "Counting is unavailable in this view.";
+    breakEl.textContent = "";
+    sendBtn.disabled = true;
+    msgEl.textContent = "";
+  }
+
+  if (already){
+    msgEl.textContent = "You're already counted from this browser. Thanks.";
+  }
+
+  (async function(){
+    try {
+      db = await window.claude.use("db");
+    } catch(e){ db = null; }
+
+    if (!db){ noDb(); return; }
+    dbReady = true;
+    refreshBtn();
+
+    var col = db.collection("signals");
+    col.onSnapshot(function(snap){
+      renderCounts(snap.docs);
+    }, function(){
+      noDb();
+    });
+
+    sendBtn.addEventListener("click", async function(){
+      if (already || !role || !citySel.value) return;
+      sendBtn.disabled = true;
+      msgEl.textContent = "Counting you…";
+      var body = {
+        role: role,
+        city: citySel.value,
+        ts: new Date().toISOString()
+      };
+      if (role === "driver"){
+        var p = document.getElementById("platforms").value;
+        if (p) body.platforms = p;
+      }
+      try {
+        await col.add(body);
+        already = true;
+        try { localStorage.setItem(STORE_KEY, "1"); } catch(e){}
+        msgEl.textContent = "Counted. That number to the right just moved because of you.";
+      } catch(err){
+        var code = (err && err.code) || "";
+        if (code === "quota_exceeded"){
+          msgEl.textContent = "The counter is full — we've got more than enough signal. Thanks anyway.";
+        } else if (code === "resource_exhausted"){
+          msgEl.textContent = "Too many people at once. Give it a second and try again.";
+        } else {
+          msgEl.textContent = "That didn't save. Try again in a moment.";
+          sendBtn.disabled = false;
+        }
+      }
+    });
+  })();
+})();
+</script>
