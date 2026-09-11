@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
   :root{
-    --ink:#0E1620;
     --paper:#EEF1F4;
     --surface:#FFFFFF;
     --surface-2:#E4E9EE;
@@ -15,16 +14,15 @@
     --text-3:#738796;
     --accent:#FFB020;
     --accent-ink:#8A5300;
-    --ice:#3E86AE;
-    --gain:#1E8A5C;
-    --gain-fill:#35B37E;
+    --ice:#2F6F9E;
+    --ice-bg:#DCEAF5;
     --loss:#A8402B;
     --loss-fill:#C8553D;
     --shadow:0 1px 2px rgba(14,22,32,.06), 0 8px 24px -12px rgba(14,22,32,.18);
     --radius:3px;
     --maxw:1120px;
   }
-  @media (prefers-color-scheme: dark){
+  @media (prefers-color-scheme:dark){
     :root:not([data-theme="light"]){
       --paper:#0B1219;
       --surface:#121C26;
@@ -37,8 +35,7 @@
       --accent:#FFB020;
       --accent-ink:#FFC65C;
       --ice:#8FC9E8;
-      --gain:#4FCB92;
-      --gain-fill:#35B37E;
+      --ice-bg:#16303F;
       --loss:#E5806A;
       --loss-fill:#C8553D;
       --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
@@ -56,8 +53,7 @@
     --accent:#FFB020;
     --accent-ink:#FFC65C;
     --ice:#8FC9E8;
-    --gain:#4FCB92;
-    --gain-fill:#35B37E;
+    --ice-bg:#16303F;
     --loss:#E5806A;
     --loss-fill:#C8553D;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
@@ -65,6 +61,7 @@
 
   *{box-sizing:border-box}
   body{
+    margin:0;
     background:var(--paper);
     color:var(--text);
     font-family:"IBM Plex Sans","Segoe UI",Helvetica,Arial,sans-serif;
@@ -72,7 +69,7 @@
     line-height:1.55;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:24px;padding-right:24px}
   h1,h2,h3{margin:0;text-wrap:balance}
   p{margin:0}
   a{color:inherit}
@@ -83,27 +80,17 @@
     font-family:"IBM Plex Mono",ui-monospace,monospace;
   }
 
-  /* ---------- masthead ---------- */
-  .masthead{
-    border-bottom:1px solid var(--line);
-    background:var(--surface);
-  }
+  /* masthead */
+  .masthead{border-bottom:1px solid var(--line);background:var(--surface)}
   .masthead-in{
     max-width:var(--maxw);margin:0 auto;padding:14px 24px;
     display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
   }
   .wordmark{
     font-family:Anton,Impact,"Arial Narrow Bold",sans-serif;
-    font-size:26px;letter-spacing:.02em;line-height:1;
-    text-transform:uppercase;
+    font-size:26px;letter-spacing:.02em;line-height:1;text-transform:uppercase;
   }
   .wordmark span{color:var(--accent-ink)}
-  .status{
-    display:inline-flex;align-items:center;gap:8px;
-    font-size:12px;color:var(--text-2);
-    font-family:"IBM Plex Mono",ui-monospace,monospace;
-  }
-  .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
   .sitenav{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
   .sitenav a{
     font-size:13px;font-weight:600;text-decoration:none;padding:7px 13px;
@@ -112,16 +99,22 @@
   .sitenav a:hover{color:var(--text);border-color:var(--line)}
   .sitenav a[aria-current="page"]{color:var(--text);background:var(--surface-2);border-color:var(--line)}
   .sitenav a:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}
+  .status{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;color:var(--text-2);
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
 
-  /* ---------- hero ---------- */
-  .hero{padding:72px 0 56px;border-bottom:1px solid var(--line)}
+  /* hero */
+  .hero{padding-block:74px 58px;border-bottom:1px solid var(--line)}
   .hero h1{
     font-family:Anton,Impact,sans-serif;
     text-transform:uppercase;
-    font-size:clamp(46px,9.2vw,116px);
-    line-height:.92;
+    font-size:clamp(44px,8.8vw,108px);
+    line-height:.93;
     letter-spacing:.005em;
-    margin:18px 0 0;
+    margin-top:18px;
   }
   .hero h1 .strike{position:relative;white-space:nowrap}
   .hero h1 .strike::after{
@@ -130,33 +123,78 @@
   }
   .hero h1 em{font-style:normal;color:var(--accent-ink)}
   .hero-sub{
-    margin-top:26px;max-width:60ch;font-size:19px;line-height:1.5;color:var(--text-2);
+    margin-top:26px;max-width:58ch;font-size:19px;line-height:1.5;color:var(--text-2);
   }
   .hero-sub strong{color:var(--text);font-weight:600}
+  .herocta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+  .btn{
+    font-family:Anton,Impact,sans-serif;text-transform:uppercase;letter-spacing:.045em;
+    font-size:18px;padding:14px 26px;text-decoration:none;display:inline-block;
+    border-radius:var(--radius);border:1px solid #0E1620;background:#0E1620;color:#F7FAFC;
+  }
+  :root[data-theme="dark"] .btn{background:var(--accent);color:#0E1620;border-color:var(--accent)}
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]) .btn{background:var(--accent);color:#0E1620;border-color:var(--accent)}
+  }
+  .btn:hover{opacity:.88}
+  .btn.ghost{background:transparent;color:var(--text);border-color:var(--line)}
+  :root[data-theme="dark"] .btn.ghost{background:transparent;color:var(--text);border-color:var(--line)}
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]) .btn.ghost{background:transparent;color:var(--text);border-color:var(--line)}
+  }
+  .btn.ghost:hover{border-color:var(--text-3);opacity:1}
+  .btn:focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px}
 
-  /* ---------- section ---------- */
-  section{padding:64px 0;border-bottom:1px solid var(--line)}
-  .sec-head{margin-bottom:32px}
+  /* sections */
+  section{padding-block:64px;border-bottom:1px solid var(--line)}
+  .sec-head{margin-bottom:34px}
   .sec-head h2{
     font-family:Anton,Impact,sans-serif;text-transform:uppercase;
     font-size:clamp(28px,4.2vw,44px);line-height:1;margin-top:10px;
   }
   .sec-head p{margin-top:14px;max-width:62ch;color:var(--text-2)}
-  select:focus-visible,input:focus-visible{outline:2px solid var(--accent-ink);outline-offset:1px}
-  @media (prefers-color-scheme:dark){
-    :root:not([data-theme="light"]) .submit{background:var(--accent);color:#0E1620;border-color:var(--accent)}
-  }
 
-  /* ---------- footer ---------- */
-  footer{padding:44px 0 64px;color:var(--text-3);font-size:13.5px}
-  footer p{max-width:78ch;margin-bottom:10px;line-height:1.6}
-  footer .disclaim{
-    border-left:2px solid var(--accent);padding-left:14px;color:var(--text-2);
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media (max-width:800px){ .steps{grid-template-columns:1fr} }
+  .step{
+    background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);
+    padding:26px 24px;display:flex;flex-direction:column;gap:10px;
   }
+  .step .n{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:11px;letter-spacing:.16em;font-weight:600;color:var(--accent-ink);
+  }
+  .step h3{font-size:20px;font-weight:600;line-height:1.25}
+  .step p{color:var(--text-2);font-size:15px;line-height:1.55}
 
-  @media (prefers-reduced-motion:reduce){
-    *{animation:none!important;transition:none!important}
+  /* the problem */
+  .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+  @media (max-width:860px){ .facts{grid-template-columns:1fr;gap:22px} }
+  .fact{padding-left:16px;border-left:3px solid var(--accent)}
+  .fact.alt{border-left-color:var(--ice)}
+  .fact h3{font-size:17px;font-weight:700;margin-bottom:7px}
+  .fact p{color:var(--text-2);font-size:15px;line-height:1.55}
+
+  /* pay strip */
+  .paystrip{
+    background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);
+    padding:30px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:26px;align-items:center;
   }
+  @media (max-width:760px){ .paystrip{grid-template-columns:1fr;gap:20px} }
+  .paystrip h3{
+    font-family:Anton,Impact,sans-serif;text-transform:uppercase;
+    font-size:clamp(23px,3.4vw,32px);line-height:1.02;margin-bottom:12px;
+  }
+  .paystrip p{color:var(--text-2);font-size:15.5px;max-width:56ch}
+  .rates{
+    display:flex;gap:26px;flex-wrap:wrap;margin-top:18px;
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;
+  }
+  .rates div .v{font-size:21px;font-weight:600;line-height:1}
+  .rates div .k{font-size:11px;color:var(--text-3);margin-top:5px;letter-spacing:.06em;text-transform:uppercase}
+
+  /* cta cards */
   .ctarow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   @media (max-width:760px){ .ctarow{grid-template-columns:1fr} }
   .ctacard{
@@ -172,6 +210,12 @@
   .ctad{color:var(--text-2);font-size:15px;line-height:1.5}
   .ctago{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12px;letter-spacing:.09em;
     text-transform:uppercase;font-weight:600;color:var(--accent-ink);margin-top:4px}
+
+  footer{padding-block:44px 64px;color:var(--text-3);font-size:13.5px}
+  footer p{max-width:78ch;margin-bottom:10px;line-height:1.6}
+  footer .disclaim{border-left:2px solid var(--accent);padding-left:14px;color:var(--text-2)}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
 <header class="masthead">
@@ -179,112 +223,108 @@
     <div class="wordmark">Zil<span>ch</span></div>
     <nav class="sitenav">
       <a href="index.html" aria-current="page">The pitch</a>
-      <a href="pledge.html">Pledge</a>
+      <a href="claim.html">Claim profile</a>
+      <a href="find.html">Find a driver</a>
       <a href="board.html">Board</a>
+      <a href="paycheck.html">Pay check</a>
     </nav>
-    <div class="status"><span class="dot" aria-hidden="true"></span>Pre-launch · west metro</div>
+    <div class="status"><span class="dot" aria-hidden="true"></span>West metro &middot; Minnesota</div>
   </div>
 </header>
 
 <main>
   <div class="hero wrap">
-    <span class="eyebrow">Rides &amp; delivery · Twin Cities west metro</span>
-    <h1>They take <span class="strike">thirty percent</span>.<br>We take <em>zilch</em>.</h1>
-    <p class="hero-sub">Rides, food, both, one app. <strong>Every dollar the customer pays goes to the person who did the work.</strong></p>
+    <span class="eyebrow">Portable driver reputation</span>
+    <h1>Six thousand trips.<br><span class="strike">None of them</span> <em>yours</em>.</h1>
+    <p class="hero-sub">Your rating is the most valuable thing you own and you can't take it anywhere. It sits inside an app you don't control and it's gone the morning they deactivate you. <strong>Build a record that's actually yours.</strong></p>
+    <div class="herocta">
+      <a class="btn" href="claim.html">Claim your profile</a>
+      <a class="btn ghost" href="find.html">Find a driver</a>
+    </div>
   </div>
 
   <section class="wrap">
     <div class="sec-head">
       <span class="eyebrow">How it works</span>
-      <h2>Three things, and that's the whole model</h2>
+      <h2>Three steps, then it's yours</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="n">STEP 01</span>
+        <h3>Build it once</h3>
+        <p>Your trips, your rating, your car, your area. Attach a screenshot of your stats screen and the profile shows as verified. Takes about two minutes.</p>
+      </div>
+      <div class="step">
+        <span class="n">STEP 02</span>
+        <h3>Hand it out</h3>
+        <p>A permanent link, a QR code for the seatback, a printable card, or save straight into a rider's contacts. However you want to give it out, it's there.</p>
+      </div>
+      <div class="step">
+        <span class="n">STEP 03</span>
+        <h3>Get found directly</h3>
+        <p>Riders look you up and reach you themselves. You set the price, you keep all of it, and nobody takes a percentage for making the introduction.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Why this matters</span>
+      <h2>Your reputation is the product they're selling</h2>
+      <p>Uber's fee isn't payment for an app. It's payment for being the only one who knows you're good at this.</p>
     </div>
     <div class="facts">
       <div class="fact">
-        <div class="fact-key">One<br>app</div>
-        <div>
-          <h3>Rides and delivery, same place</h3>
-          <p>You're already carrying two apps to do one job. Moving a person or a burrito across town is the same work, in the same car, on the same night.</p>
-        </div>
+        <h3>It doesn't transfer</h3>
+        <p>Four years of five-star ratings is worth nothing the moment you open a different app. That isn't a technical limitation — it's the entire retention strategy.</p>
+      </div>
+      <div class="fact alt">
+        <h3>It vanishes on deactivation</h3>
+        <p>An algorithm decides, there's often no appeal, and everything you built is gone with it. A record you hold a copy of can't be switched off.</p>
       </div>
       <div class="fact">
-        <div class="fact-key">100%</div>
-        <div>
-          <h3>The fare is yours</h3>
-          <p>No commission, no service fee, no surge split. What the rider pays and what you're paid are the same number. We don't earn more when fares rise, so we have no reason to raise them.</p>
-        </div>
-      </div>
-      <div class="fact">
-        <div class="fact-key">One<br>suburb</div>
-        <div>
-          <h3>West metro first, and only when it's full</h3>
-          <p>Nothing turns on until enough drivers in one area commit to the same night. An app with four drivers is worse than no app, so we'd rather start late in one suburb than early across six.</p>
-        </div>
+        <h3>It costs you 30% forever</h3>
+        <p>As long as they're the only place your history exists, the cut is whatever they say it is. A rider who can find you directly changes that number to zero.</p>
       </div>
     </div>
   </section>
 
   <section class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Why here, why now</span>
-      <h2>Minnesota is the best place in America to do this</h2>
-      <p>In 2024 Uber and Lyft threatened to leave Minneapolis over driver pay. The state passed a floor anyway and they stayed. The fight left behind a market where drivers know their worth and the rules are already on paper.</p>
-    </div>
-
-    <div class="tablescroll">
-      <table class="mn-table">
-        <caption>Minnesota statutory requirements every rideshare network must meet, us included.</caption>
-        <thead>
-          <tr><th scope="col">Requirement</th><th scope="col">Figure</th><th scope="col">What it means for us</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Statewide minimum driver pay</td>
-            <td class="num">$1.28 / mile<br>$0.31 / minute</td>
-            <td class="note">A floor, not a ceiling. Applies to us identically. We compete by not taking a cut on top of it, not by paying less.</td>
-          </tr>
-          <tr>
-            <td>Required in-trip liability coverage</td>
-            <td class="num">$1,500,000</td>
-            <td class="note"><span class="flagbad">The real cost of entry.</span> Higher than most states. Joiryde looked at this plus licensing and left the market without launching.</td>
-          </tr>
-          <tr>
-            <td>Minneapolis + Saint Paul licenses</td>
-            <td class="num">≈ $78,000</td>
-            <td class="note">Roughly $37k and $41k, per year, applied for separately.</td>
-          </tr>
-          <tr>
-            <td>West metro suburbs</td>
-            <td class="num">State law only</td>
-            <td class="note"><span class="flaggood">The opening.</span> Hopkins, Minnetonka, Waconia and their neighbours don't run their own licensing regimes — and have worse Uber wait times than downtown.</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="paystrip">
+      <div>
+        <h3>While you're here — were you paid legally?</h3>
+        <p>Minnesota sets a floor on rideshare pay per passenger mile and minute. So do Washington and New York City. Run one pay period against it and find out whether you were short, and who to file with if you were.</p>
+        <div class="rates">
+          <div><div class="v">$1.28</div><div class="k">per mile</div></div>
+          <div><div class="v">$0.31</div><div class="k">per minute</div></div>
+          <div><div class="v">$5.00</div><div class="k">per trip floor</div></div>
+        </div>
+      </div>
+      <a class="btn" href="paycheck.html">Check a pay period</a>
     </div>
   </section>
 
   <section class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Two things you can do now</span>
-      <h2>Pick one</h2>
+      <span class="eyebrow">Also here</span>
+      <h2>Two more things</h2>
     </div>
     <div class="ctarow">
-      <a class="ctacard" href="pledge.html">
-        <span class="ctak">Pledge your area</span>
-        <span class="ctad">Say where you'd drive. Nothing launches until one suburb fills, so the first night is never empty.</span>
-        <span class="ctago">Add your name &rarr;</span>
+      <a class="ctacard" href="board.html">
+        <span class="ctak">The job board</span>
+        <span class="ctad">Someone needs a ride or a delivery, names a price, and a driver claims it. No commission, no surge split — the offer goes to whoever does the work.</span>
+        <span class="ctago">Open the board &rarr;</span>
       </a>
-      <a class="ctacard alt" href="paycheck.html">
-        <span class="ctak">Check if they underpaid you</span>
-        <span class="ctad">Minnesota sets a legal floor on rideshare pay. Run one pay period against it and find out.</span>
-        <span class="ctago">Open the checker &rarr;</span>
+      <a class="ctacard alt" href="pledge.html">
+        <span class="ctak">Pledge your area</span>
+        <span class="ctad">Say where you'd drive. Nothing turns on in a suburb until enough drivers there commit, so the first night is never four people and an empty map.</span>
+        <span class="ctago">Add your name &rarr;</span>
       </a>
     </div>
   </section>
 </main>
 
 <footer class="wrap">
-  <p class="disclaim"><strong>Zilch is not operating yet.</strong> Nothing here is a service you can book. This is a pre-launch page measuring whether enough people want it to exist.</p>
-  <p>Figures come from Minnesota Statutes § 65B.472, the state TNC compensation policy effective December 2025, and reported licensing costs in Minneapolis and Saint Paul. Verify before relying on any of it — this is a pitch, not legal advice.</p>
+  <p class="disclaim"><strong>Zilch takes no commission and arranges no rides.</strong> Profiles are created and owned by drivers. Anything you agree with a driver is between the two of you.</p>
+  <p>Pay figures from Minn. Stat. § 181C.03, RCW 49.46.300 and 35 RCNY § 59B-23. Rates change — verify before relying on any of it. This is not legal advice. The whole thing is open source; run your own copy anywhere.</p>
 </footer>
-
-
