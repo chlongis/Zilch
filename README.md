@@ -2,7 +2,7 @@
 
 **Drivers own their record.**
 
-A rideshare driver's 6,000 trips at 4.97 is the single most valuable thing they have, and it isn't theirs. It lives inside an app they don't control, it can't be taken anywhere else, and it disappears the day they get deactivated by an algorithm with no appeal.
+A rideshare driver's 6,000 trips at 4.97 stars is the single most valuable thing they have, and it isn't theirs. It lives inside an app they don't control, it can't be taken anywhere else, and it disappears the day they get deactivated by an algorithm with no appeal.
 
 Zilch is a portable reputation layer for gig drivers, with a commission-free job board attached. Drivers mint a profile they own, hand it out however they like, and get found directly. No cut is taken from anything.
 
@@ -54,7 +54,7 @@ You need a free [Supabase](https://supabase.com) account and a GitHub account. N
 
 **Claiming is locked at the database.** The update policy on `requests` only permits changing a row that is still `open`, and only to `claimed`. Two drivers hitting the same job at the same moment: one wins and the other is rejected by Postgres, not by browser JavaScript that can be raced or bypassed.
 
-**Verification is tiered and labelled honestly.** A profile shows *Verified* when a stats screenshot is attached, *Self-reported* when nothing is. Screenshots are fakeable, and pretending otherwise is how a directory earns a bad reputation in its first month. The label appears on the profile and on every directory card so riders can weigh it themselves.
+**Verification is tiered and labelled honestly.** In order to prevent doctored ratings we use multiple methods to verify driver's ratings. A profile shows *Verified* when a stats screenshot is attached along with *Self-reported* when nothing is. Screenshots are fakeable, . The label appears on the profile and on every directory card so riders can weigh it themselves.
 
 **Pay law differs by jurisdiction and the checker respects that.** Minnesota measures compliance across a pay period of up to 14 days. Washington and New York City measure each trip individually. NYC has no flat per-trip floor at all — the formula itself is the minimum, with the utilization rate already folded into the published rates. Only passenger miles and minutes count anywhere. Tips are excluded from the minimum everywhere.
 
