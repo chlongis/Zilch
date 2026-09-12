@@ -1,4 +1,4 @@
-<title>Minnesota Driver Pay Check</title>
+<title>Driver Pay Check</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Libre+Franklin:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
@@ -200,20 +200,22 @@
 
 <div class="masthead">
   <div class="masthead-in">
-    <h1>Minnesota Driver Pay Check</h1>
-    <p>Independent. Not affiliated with the state or any platform.</p>
+    <h1>Driver Pay Check</h1>
+    <p>Minnesota, Washington and New York City. Independent, not affiliated with any agency or platform.</p>
     <nav class="sitenav">
       <a href="paycheck.html" aria-current="page">Pay check</a>
       <a href="index.html">Zilch</a>
-      <a href="pledge.html">Pledge</a>
+      <a href="find.html">Find a driver</a>
+      <a href="claim.html">Claim profile</a>
+      <a href="board.html">Board</a>
     </nav>
   </div>
 </div>
 
 <div class="intro wrap">
-  <span class="eyebrow">Minn. Stat. § 181C.03</span>
+  <span class="eyebrow">Minnesota &middot; Washington &middot; New York City</span>
   <h2>Were you paid what the law requires?</h2>
-  <p>Minnesota sets a minimum per passenger mile and per passenger minute. It's measured <strong>across your whole pay period</strong>, not trip by trip. Enter your totals.</p>
+  <p>Some states set a legal floor on what rideshare drivers get paid per passenger mile and minute. Pick where you drive and enter your numbers.</p>
 </div>
 
 <section class="wrap">
@@ -226,11 +228,21 @@
   <div class="tool">
     <div class="inputs">
       <div>
-        <label class="fl" for="period">Which rates</label>
-        <p class="sub">Rates rose Jan 1, 2027.</p>
+        <label class="fl" for="period">Where and when</label>
+        <p class="sub">Rates and rules differ by state.</p>
         <select id="period">
-          <option value="cur" selected>Pay period in 2025 or 2026</option>
-          <option value="new">Pay period on or after Jan 1, 2027</option>
+          <optgroup label="Minnesota">
+            <option value="mn26" selected>2025 or 2026</option>
+            <option value="mn27">Jan 2027 onward</option>
+          </optgroup>
+          <optgroup label="Washington">
+            <option value="seattle">Seattle &mdash; 2026</option>
+            <option value="wa">Outside Seattle &mdash; 2026</option>
+          </optgroup>
+          <optgroup label="New York City">
+            <option value="nyc">Standard vehicle &mdash; 2026</option>
+            <option value="nycwav">Wheelchair-accessible &mdash; 2026</option>
+          </optgroup>
         </select>
       </div>
 
@@ -274,7 +286,7 @@
       <div class="rows" id="rows" hidden>
         <div class="row"><span class="k">Miles owed</span><span class="v" id="rMiles">—</span></div>
         <div class="row"><span class="k">Minutes owed</span><span class="v" id="rMins">—</span></div>
-        <div class="row"><span class="k">Per-trip floor check</span><span class="v" id="rFloor">—</span></div>
+        <div class="row" id="rowFloor"><span class="k">Per-trip floor check</span><span class="v" id="rFloor">—</span></div>
         <div class="row tot"><span class="k">Legal minimum for this period</span><span class="v" id="rReq">—</span></div>
         <div class="row"><span class="k">You were actually paid</span><span class="v" id="rPaid">—</span></div>
       </div>
@@ -293,12 +305,21 @@
     <h3>What to do about it</h3>
     <p>The company is supposed to catch this itself and make up the difference in your next cycle. If it didn't, file with the state.</p>
     <div class="contact">
-      <span>DLI Labor Standards Division</span>
-      <span>651-284-5075</span>
-      <span>dli.laborstandards@state.mn.us</span>
+      <span id="cWho">&mdash;</span>
+      <span id="cTel">&mdash;</span>
+      <span id="cEmail">&mdash;</span>
     </div>
-    <p>Bring your weekly summaries. That's the evidence. <strong>Retaliating against you for filing is illegal under the same chapter</strong>, so a deactivation over this is a second violation, not the end of it.</p>
+    <p>Bring your weekly summaries. That's the evidence. <strong>Retaliating against you for filing is separately illegal</strong> in both states, so a deactivation over this is a second violation, not the end of it.</p>
   </div>
+</section>
+
+<section class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">While you're here</span>
+    <h2>That record is yours. Take it with you.</h2>
+    <p>Those trips and that rating live in an app you don't control and vanish the day they deactivate you. Build a profile that doesn't — riders can find you directly, and you keep the whole fare.</p>
+  </div>
+  <a class="act" href="claim.html" style="text-decoration:none;display:inline-block">Claim your profile &rarr;</a>
 </section>
 
 <section class="wrap">
@@ -338,23 +359,21 @@
   </div>
   <div class="tablescroll">
     <table class="lawtable">
-      <thead><tr><th scope="col">Rule</th><th scope="col">Through 2026</th><th scope="col">From Jan 2027</th></tr></thead>
+      <thead><tr><th scope="col">Rule</th><th scope="col" id="lawRegion">Rate</th></tr></thead>
       <tbody>
-        <tr><td>Per passenger mile</td><td class="num">$1.28</td><td class="num">$1.33</td></tr>
-        <tr><td>Per passenger minute</td><td class="num">$0.31</td><td class="num">$0.32</td></tr>
-        <tr><td>Minimum per trip</td><td class="num">$5.00</td><td class="num">$5.20</td></tr>
-        <tr><td>Wheelchair-accessible, extra per mile</td><td class="num">+$0.91</td><td class="num">+$0.95</td></tr>
+        <tr><td>Per passenger mile</td><td class="num" id="lawMile">&mdash;</td></tr>
+        <tr><td>Per passenger minute</td><td class="num" id="lawMin">&mdash;</td></tr>
+        <tr><td>Minimum per trip</td><td class="num" id="lawTrip">&mdash;</td></tr>
+        <tr><td>Measured</td><td class="num" id="lawBasis">&mdash;</td></tr>
       </tbody>
     </table>
   </div>
-  <p style="margin-top:16px;color:var(--text-2);font-size:15px;max-width:70ch">
-    Measured across a pay period of up to 14 days, not trip by trip. Only time and miles with a rider in the car count. Tips are yours and don't count toward the minimum. Rates rise annually from 2027 alongside the state minimum wage.
-  </p>
-</section>
+  <p style="margin-top:16px;color:var(--text-2);font-size:15px;max-width:70ch" id="lawNote"></p>
+  </section>
 
 <footer class="wrap">
-  <p><strong>This is an estimate, not a legal determination.</strong> The $5 floor applies per trip and this can only approximate that from your totals, so the real minimum may be a little higher if a lot of your trips were short. A shortfall here means go look at your statements, not that it's proven.</p>
-  <p>Rates from Minn. Stat. § 181C.03 and the Department of Labor and Industry. Not affiliated with DLI, Uber, Lyft or anyone else. Not legal advice.</p>
+  <p><strong>This is an estimate, not a legal determination.</strong> The per-trip floor applies to each trip individually, and this can only approximate that from your totals — so the real minimum may be higher if many of your trips were short. In Washington and New York City the whole standard is per trip, which makes this a rougher guide there. A shortfall here means go look at your statements, not that it's proven.</p>
+  <p>Rates from Minn. Stat. § 181C.03 (Minnesota DLI), RCW 49.46.300 (Washington L&amp;I), and 35 RCNY § 59B-23 (NYC TLC, effective March 1 2026). Not affiliated with any agency, Uber, Lyft or anyone else. Not legal advice.</p>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
@@ -364,8 +383,18 @@
   var $ = function(id){ return document.getElementById(id); };
 
   var RATES = {
-    cur: {mile:1.28, min:0.31, trip:5.00},
-    "new": {mile:1.33, min:0.32, trip:5.20}
+    mn26:    {mile:1.28, min:0.31, trip:5.00, basis:"period", label:"Minnesota", cite:"Minn. Stat. \u00a7 181C.03",
+              who:"Minnesota Department of Labor and Industry", tel:"651-284-5075", email:"dli.laborstandards@state.mn.us"},
+    mn27:    {mile:1.33, min:0.32, trip:5.20, basis:"period", label:"Minnesota", cite:"Minn. Stat. \u00a7 181C.03",
+              who:"Minnesota Department of Labor and Industry", tel:"651-284-5075", email:"dli.laborstandards@state.mn.us"},
+    seattle: {mile:1.63, min:0.70, trip:6.12, basis:"trip", label:"Seattle", cite:"RCW 49.46.300",
+              who:"Washington Department of Labor & Industries", tel:"1-866-219-7321", email:"tnc@lni.wa.gov"},
+    wa:      {mile:1.38, min:0.40, trip:3.55, basis:"trip", label:"Washington", cite:"RCW 49.46.300",
+              who:"Washington Department of Labor & Industries", tel:"1-866-219-7321", email:"tnc@lni.wa.gov"},
+    nyc:     {mile:1.283, min:0.681, trip:0, basis:"trip", label:"New York City", cite:"35 RCNY \u00a7 59B-23",
+              who:"NYC Taxi & Limousine Commission", tel:"311 (or 212-692-8294)", email:"nyc.gov/tlc"},
+    nycwav:  {mile:1.601, min:0.681, trip:0, basis:"trip", label:"NYC \u2014 wheelchair-accessible", cite:"35 RCNY \u00a7 59B-23",
+              who:"NYC Taxi & Limousine Commission", tel:"311 (or 212-692-8294)", email:"nyc.gov/tlc"}
   };
 
   var sb = window.supabase.createClient("https://zlvvtaydmaphdnhvmppj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsdnZ0YXlkbWFwaGRuaHZtcHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NzE3MTEsImV4cCI6MjEwNDU0NzcxMX0.t5ILb0-k3auW1Z3Em-gdR11rHURl5N-SVic9q1YDG7k");
@@ -380,8 +409,25 @@
     return "$" + n.toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2});
   };
 
+  function paintRegion(r){
+    $("lawRegion").textContent = r.label;
+    $("lawMile").textContent = "$" + r.mile.toFixed(2);
+    $("lawMin").textContent  = "$" + r.min.toFixed(2);
+    $("lawTrip").textContent = r.trip > 0 ? "$" + r.trip.toFixed(2) : "none";
+    $("lawBasis").textContent = r.basis === "period" ? "Per pay period" : "Per trip";
+    var note = r.basis === "period"
+      ? "Measured across a pay period of up to 14 days, not trip by trip. Only time and miles with a rider in the car count. Tips are yours and don't count toward the minimum."
+      : "Measured on each individual trip, not averaged across the week. Only passenger time and miles count. Tips are yours and don't count toward the minimum.";
+    if (r.trip === 0) note += " There is no flat per-trip floor here \u2014 the formula itself is the minimum, and the published rates already fold in the utilization rate.";
+    $("lawNote").textContent = note;
+    $("cWho").textContent = r.who;
+    $("cTel").textContent = r.tel;
+    $("cEmail").textContent = r.email;
+  }
+
   function calc(){
-    var r = RATES[$("period").value] || RATES.cur;
+    var r = RATES[$("period").value] || RATES.mn26;
+    paintRegion(r);
     var miles = parseFloat($("miles").value);
     var mins  = parseFloat($("mins").value);
     var trips = parseFloat($("trips").value);
@@ -409,6 +455,7 @@
 
     $("rMiles").textContent = miles.toLocaleString("en-US",{maximumFractionDigits:1}) + " mi × " + usd(r.mile) + " = " + usd(miles * r.mile);
     $("rMins").textContent  = mins.toLocaleString("en-US") + " min × " + usd(r.min) + " = " + usd(mins * r.min);
+    $("rowFloor").hidden = (r.trip === 0);
     $("rFloor").textContent = trips.toLocaleString("en-US") + " trips × " + usd(r.trip) + " = " + usd(byFloor);
     $("rReq").textContent   = usd(required);
     $("rPaid").textContent  = usd(paid);
@@ -422,14 +469,16 @@
         '<div class="vamount" id="vamt">' + usd(Math.abs(diff)) + '</div>');
       var old = document.querySelectorAll("#verdict .vamount");
       if (old.length > 1) old[0].remove();
-      $("vsub").textContent = "short for this period, before tips. If they didn't make it up next cycle, you can file on it.";
+      $("vsub").textContent = r.basis === "period"
+        ? "short for this period, before tips. If they didn't make it up next cycle, you can file on it."
+        : "short across these trips, before tips. Washington measures each trip on its own, so individual trips may be short even when the total clears.";
       $("shortSec").hidden = false;
     } else {
       v.className = "verdict ok";
       $("vhead").textContent = "You were paid at or above the minimum";
       var olds = document.querySelectorAll("#verdict .vamount");
       Array.prototype.forEach.call(olds, function(n){ n.remove(); });
-      $("vsub").textContent = "Cleared it by " + usd(diff) + ". Check a few more periods — each one counts separately.";
+      $("vsub").textContent = "Cleared it by " + usd(diff) + ". " + (r.basis === "period" ? "Check a few more periods — each one counts separately." : "Individual short trips can still be violations here — this is the total.");
       $("shortSec").hidden = true;
     }
 

@@ -192,6 +192,20 @@
   .claim:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}
   .claimedby{font-size:12.5px;color:var(--text-3);max-width:150px}
 
+  .areabar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;
+    padding:12px 14px;background:var(--surface-2);border:1px solid var(--line-soft);border-radius:var(--radius)}
+  .contact-reveal{
+    margin-top:7px;padding:9px 11px;
+    background:var(--open-bg);border:1px solid var(--open);border-radius:var(--radius);
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;color:var(--open);
+    word-break:break-all;
+  }
+  .contact-label{font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:600;
+    margin-bottom:4px;display:block;color:var(--open)}
+  .area-tag{font-size:10.5px;padding:2px 7px;border-radius:3px;
+    background:var(--surface-2);color:var(--text-3);border:1px solid var(--line-soft);
+    font-family:"IBM Plex Mono",ui-monospace,monospace;letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+
   .empty{
     background:var(--surface);border:1px dashed var(--line);border-radius:var(--radius);
     padding:38px 24px;text-align:center;color:var(--text-2);
@@ -206,6 +220,41 @@
   .banner b{color:var(--text)}
   footer{max-width:1180px;margin:0 auto;padding:0 22px 56px;color:var(--text-3);font-size:12.5px;line-height:1.6}
   footer p{max-width:80ch;margin-bottom:9px}
+  /* insurance gate */
+  .overlay{position:fixed;inset:0;background:rgba(14,22,32,.72);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
+  .gate{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:0 12px 48px rgba(0,0,0,.35);max-width:480px;width:100%;padding:32px 28px;
+  }
+  .gate h2{font-family:Anton,Impact,sans-serif;text-transform:uppercase;font-size:28px;line-height:1.05;margin-bottom:14px}
+  .gate p{font-size:15px;color:var(--text-2);margin-bottom:16px;line-height:1.55}
+  .upload-zone{
+    border:2px dashed var(--line);border-radius:var(--radius);padding:28px 20px;text-align:center;
+    margin-bottom:12px;cursor:pointer;position:relative;
+  }
+  .upload-zone:hover{border-color:var(--text-3)}
+  .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+  .upload-zone .uz-label{font-size:15px;font-weight:600;color:var(--text)}
+  .upload-zone .uz-sub{font-size:13px;color:var(--text-3);margin-top:5px}
+  .upload-zone.has-file{border-color:var(--open);background:var(--open-bg)}
+  .upload-zone.has-file .uz-label{color:var(--open)}
+  .gate-go{
+    font:inherit;font-size:16px;font-weight:600;padding:13px 24px;cursor:pointer;width:100%;
+    background:#0E1620;color:#F7FAFC;border:1px solid #0E1620;border-radius:var(--radius);
+    margin-bottom:12px;
+  }
+  :root[data-theme="dark"] .gate-go{background:var(--open);color:#0F1512;border-color:var(--open)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .gate-go{background:var(--open);color:#0F1512;border-color:var(--open)}}
+  .gate-go:hover{opacity:.88}
+  .gate-go:disabled{opacity:.4;cursor:default}
+  .gate-skip{
+    font:inherit;font-size:15px;font-weight:700;padding:14px 24px;cursor:pointer;width:100%;
+    background:#C8553D;color:#fff;border:2px solid #C8553D;border-radius:var(--radius);
+    text-transform:uppercase;letter-spacing:.04em;
+  }
+  .gate-skip:hover{background:#A8402B;border-color:#A8402B}
+  .gate-msg{font-size:13px;color:var(--text-3);text-align:center;margin-top:10px}
+
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
@@ -214,9 +263,11 @@
     <div class="brand">
       <span class="wordmark">Zil<span>ch</span></span>
       <nav class="sitenav">
-        <a href="https://claude.ai/code/artifact/ebe2a515-6433-4327-8772-f73fcf167eb6">The pitch</a>
-        <a href="https://claude.ai/code/artifact/30296ce3-94af-42db-9aeb-8dee7c301be6">Pledge</a>
-        <a href="https://claude.ai/code/artifact/05074576-3bdf-4867-8ece-0f5c70fdfa1d" aria-current="page">Board</a>
+        <a href="index.html">The pitch</a>
+        <a href="find.html">Find a driver</a>
+        <a href="claim.html">Claim profile</a>
+        <a href="board.html" aria-current="page">Board</a>
+        <a href="paycheck.html">Pay check</a>
       </nav>
     </div>
     <div class="modes" role="group" aria-label="Switch between posting and driving">
@@ -248,7 +299,7 @@
 
       <div>
         <label class="fl" for="fName">Your first name</label>
-        <input type="text" id="fName" maxlength="24" placeholder="Cole" autocomplete="off">
+        <input type="text" id="fName" maxlength="24" placeholder="First name" autocomplete="off">
       </div>
 
       <div>
@@ -279,8 +330,27 @@
       </div>
 
       <div>
+        <label class="fl" for="fArea">Area</label>
+        <select id="fArea">
+          <option value="">Not sure / anywhere</option>
+          <option value="waconia">Waconia</option>
+          <option value="hopkins">Hopkins</option>
+          <option value="minnetonka">Minnetonka</option>
+          <option value="slp">St. Louis Park</option>
+          <option value="edenprairie">Eden Prairie</option>
+          <option value="plymouth">Plymouth</option>
+        </select>
+      </div>
+
+      <div>
         <label class="fl" for="fNotes">Anything else</label>
         <textarea id="fNotes" maxlength="180" placeholder="Two bags. Can meet you at the north entrance."></textarea>
+      </div>
+
+      <div>
+        <label class="fl" for="fContact">How should the driver reach you?</label>
+        <p class="note" style="margin-bottom:6px">Phone, Signal, anything — only shown to whoever claims. Optional.</p>
+        <input type="text" id="fContact" maxlength="80" placeholder="612-555-0100 or @you on Signal">
       </div>
 
       <button class="go" id="post">Post it</button>
@@ -299,58 +369,177 @@
         <button type="button" data-f="open" id="fOpenF" aria-pressed="false">Unclaimed only</button>
       </div>
     </div>
+    <div class="areabar" id="areaBar" hidden>
+      <span class="eyebrow" style="margin-right:10px">Your area</span>
+      <div class="filters" role="group" aria-label="Filter by area">
+        <button type="button" data-a="" id="aAll" aria-pressed="true">All areas</button>
+        <button type="button" data-a="waconia" id="aWaconia" aria-pressed="false">Waconia</button>
+        <button type="button" data-a="hopkins" id="aHopkins" aria-pressed="false">Hopkins</button>
+        <button type="button" data-a="minnetonka" id="aMinnetonka" aria-pressed="false">Minnetonka</button>
+        <button type="button" data-a="slp" id="aSlp" aria-pressed="false">St. Louis Park</button>
+        <button type="button" data-a="edenprairie" id="aEdenPrairie" aria-pressed="false">Eden Prairie</button>
+        <button type="button" data-a="plymouth" id="aPlymouth" aria-pressed="false">Plymouth</button>
+      </div>
+    </div>
     <div class="list" id="list"></div>
+  </div>
+</div>
+
+<div class="overlay" id="insuranceGate" hidden>
+  <div class="gate">
+    <h2>One thing before you drive</h2>
+    <p>Upload your rideshare insurance card so riders know you're covered. Photo, screenshot, PDF — whatever you've got.</p>
+    <div class="upload-zone" id="uploadZone">
+      <input type="file" id="insuranceFile" accept="image/*,.pdf">
+      <div class="uz-label" id="uzLabel">Tap or drop your insurance card here</div>
+      <div class="uz-sub" id="uzSub">JPG, PNG or PDF</div>
+    </div>
+    <button class="gate-go" id="gateUpload" disabled>Upload &amp; continue</button>
+    <button class="gate-skip" id="gateSkip">Proceed without uploading?</button>
+    <p class="gate-msg" id="gateMsg"></p>
   </div>
 </div>
 
 <footer>
   <p><strong>Claiming uses a real lock.</strong> If two drivers hit the same job at once, one wins and the other is told it's gone.</p>
-  <p>Display names only. No phone numbers, addresses or payment details stored — contact exchange needs real accounts, which is the next piece of work.</p>
+  <p>Display names only. Contact info is optional and shown only to the driver who claims your job.</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 (function(){
   "use strict";
 
-  var db = null, col = null, ready = false;
-  var kind = "ride", mode = "need", filter = "all";
-  var rows = [];
-
+  var sb = window.supabase.createClient("https://zlvvtaydmaphdnhvmppj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsdnZ0YXlkbWFwaGRuaHZtcHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NzE3MTEsImV4cCI6MjEwNDU0NzcxMX0.t5ILb0-k3auW1Z3Em-gdR11rHURl5N-SVic9q1YDG7k");
   var $ = function(id){ return document.getElementById(id); };
 
-  /* ---- who am I (per browser, prototype only) ---- */
-  var ME_KEY = "zilch.me.v1";
-  var me;
+  var kind = "ride", mode = "need", filter = "all", areaFilter = "";
+  var rows = [], ready = false;
+
+  var AREA_LABELS = {
+    waconia:"Waconia", hopkins:"Hopkins", minnetonka:"Minnetonka",
+    slp:"St. Louis Park", edenprairie:"Eden Prairie", plymouth:"Plymouth"
+  };
+
+  var AREA_IDS = [["","aAll"],["waconia","aWaconia"],["hopkins","aHopkins"],
+    ["minnetonka","aMinnetonka"],["slp","aSlp"],["edenprairie","aEdenPrairie"],["plymouth","aPlymouth"]];
+
+  var ME_KEY = "zilch.me.v1", me;
   try { me = localStorage.getItem(ME_KEY); } catch(e){}
   if (!me){
     me = "u" + Math.random().toString(36).slice(2, 10);
     try { localStorage.setItem(ME_KEY, me); } catch(e){}
   }
 
-  /* ---- mode ---- */
+  function setAreaFilter(a){
+    areaFilter = a;
+    AREA_IDS.forEach(function(p){
+      $(p[1]).setAttribute("aria-pressed", String(areaFilter === p[0]));
+    });
+    try { localStorage.setItem("zilch.area.v1", a); } catch(e){}
+    render();
+  }
+  AREA_IDS.forEach(function(p){
+    $(p[1]).addEventListener("click", function(){ setAreaFilter(p[0]); });
+  });
+  try {
+    var savedArea = localStorage.getItem("zilch.area.v1");
+    if (savedArea !== null){
+      areaFilter = savedArea;
+      AREA_IDS.forEach(function(p){
+        $(p[1]).setAttribute("aria-pressed", String(areaFilter === p[0]));
+      });
+    }
+  } catch(e){}
+
+  /* --- insurance gate --- */
+  var INS_KEY = "zilch.insurance.v1";
+  var insCleared = false;
+  try { insCleared = localStorage.getItem(INS_KEY) === "1"; } catch(e){}
+
+  var selectedFile = null;
+  $("insuranceFile").addEventListener("change", function(e){
+    var f = e.target.files[0];
+    if (!f) return;
+    selectedFile = f;
+    $("uzLabel").textContent = f.name;
+    $("uzSub").textContent = (f.size / 1024).toFixed(0) + " KB";
+    $("uploadZone").classList.add("has-file");
+    $("gateUpload").disabled = false;
+  });
+
+  $("gateUpload").addEventListener("click", async function(){
+    if (!selectedFile) return;
+    var btn = $("gateUpload");
+    btn.disabled = true; btn.textContent = "Uploading…";
+    var ext = selectedFile.name.split(".").pop() || "jpg";
+    var path = me + "/insurance." + ext;
+    var res = await sb.storage.from("insurance").upload(path, selectedFile, {upsert:true});
+    if (res.error){
+      $("gateMsg").textContent = "Upload failed — you can still proceed without it.";
+      btn.disabled = false; btn.textContent = "Try again";
+      return;
+    }
+    insCleared = true;
+    try { localStorage.setItem(INS_KEY, "1"); } catch(e){}
+    $("insuranceGate").hidden = true;
+    activateDriverMode();
+  });
+
+  $("gateSkip").addEventListener("click", function(){
+    insCleared = true;
+    try { localStorage.setItem(INS_KEY, "1"); } catch(e){}
+    $("insuranceGate").hidden = true;
+    activateDriverMode();
+  });
+
+  function showInsuranceGate(){
+    $("insuranceGate").hidden = false;
+    selectedFile = null;
+    $("uzLabel").textContent = "Tap or drop your insurance card here";
+    $("uzSub").textContent = "JPG, PNG or PDF";
+    $("uploadZone").classList.remove("has-file");
+    $("gateUpload").disabled = true;
+    $("gateUpload").textContent = "Upload & continue";
+    $("gateMsg").textContent = "";
+  }
+
+  function activateDriverMode(){
+    mode = "drive";
+    $("mNeed").setAttribute("aria-pressed", "false");
+    $("mDrive").setAttribute("aria-pressed", "true");
+    $("postPanel").hidden = true;
+    $("areaBar").hidden = false;
+    $("boardTitle").textContent = "Jobs you can claim";
+    if (filter === "all"){ setFilter("open"); } else { render(); }
+  }
+
   function setMode(m){
+    if (m === "drive" && !insCleared){
+      showInsuranceGate();
+      return;
+    }
     mode = m;
     $("mNeed").setAttribute("aria-pressed", String(m === "need"));
     $("mDrive").setAttribute("aria-pressed", String(m === "drive"));
     $("postPanel").hidden = (m === "drive");
+    $("areaBar").hidden = (m !== "drive");
     $("boardTitle").textContent = m === "drive" ? "Jobs you can claim" : "Open jobs";
     if (m === "drive" && filter === "all"){ setFilter("open"); } else { render(); }
   }
   $("mNeed").addEventListener("click", function(){ setMode("need"); });
   $("mDrive").addEventListener("click", function(){ setMode("drive"); });
 
-  /* ---- kind ---- */
   function setKind(k){
     kind = k;
     $("kRide").setAttribute("aria-pressed", String(k === "ride"));
     $("kFood").setAttribute("aria-pressed", String(k === "delivery"));
     $("fFrom").placeholder = k === "ride" ? "Ridgedale Center, Minnetonka" : "Hola Arepa, Hopkins";
-    $("fTo").placeholder   = k === "ride" ? "Hopkins station" : "Home — I'll share the address after";
+    $("fTo").placeholder   = k === "ride" ? "Hopkins station" : "Home - I'll share the address after";
   }
   $("kRide").addEventListener("click", function(){ setKind("ride"); });
   $("kFood").addEventListener("click", function(){ setKind("delivery"); });
 
-  /* ---- filters ---- */
   function setFilter(f){
     filter = f;
     [["all","fAll"],["ride","fRideF"],["delivery","fFoodF"],["open","fOpenF"]].forEach(function(p){
@@ -362,7 +551,6 @@
     $(p[1]).addEventListener("click", function(){ setFilter(p[0]); });
   });
 
-  /* ---- render ---- */
   function esc(s){
     return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
       return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
@@ -375,11 +563,14 @@
       if (filter === "open") return r.status !== "claimed";
       if (filter === "ride" || filter === "delivery") return r.kind === filter;
       return true;
+    }).filter(function(r){
+      if (!areaFilter) return true;
+      return r.area === areaFilter || !r.area;
     });
 
     if (!ready){
-      list.innerHTML = '<div class="empty"><strong>Connecting to the board…</strong>' +
-        'Open jobs are shared with everyone who has this page open.</div>';
+      list.innerHTML = '<div class="empty"><strong>Connecting to the board\u2026</strong>' +
+        'Open jobs are shared with everyone looking at this page.</div>';
       return;
     }
     if (!shown.length){
@@ -393,26 +584,35 @@
 
     list.innerHTML = shown.map(function(r){
       var claimed = r.status === "claimed";
-      var mineClaim = claimed && r.claimedBy === me;
+      var mineClaim = claimed && r.claimed_by === me;
       var isRide = r.kind === "ride";
+      var areaLabel = r.area ? AREA_LABELS[r.area] || r.area : "";
+      var contactBlock = "";
+      if (mineClaim){
+        contactBlock = r.contact
+          ? '<div class="contact-reveal"><span class="contact-label">How to reach them</span>' + esc(r.contact) + '</div>'
+          : '<div class="contact-reveal" style="opacity:.6;font-style:italic">No contact info left \u2014 try posting in your area group that you have the job.</div>';
+      }
       return '' +
       '<div class="card' + (claimed ? " claimed" : "") + '">' +
         '<div class="card-main">' +
           '<div class="tags">' +
             '<span class="tag ' + (isRide ? "t-ride" : "t-food") + '">' + (isRide ? "Ride" : "Delivery") + '</span>' +
             '<span class="tag ' + (claimed ? "t-claimed" : "t-open") + '">' + (claimed ? "Claimed" : "Open") + '</span>' +
+            (areaLabel ? '<span class="area-tag">' + esc(areaLabel) + '</span>' : "") +
           '</div>' +
-          '<div class="route">' + esc(r.from) +
-            '<span class="arrow">→</span>' + esc(r.to) + '</div>' +
+          '<div class="route">' + esc(r.pickup) +
+            '<span class="arrow">\u2192</span>' + esc(r.dropoff) + '</div>' +
           '<div class="meta">' + esc(r.name || "Someone") +
-            '<span class="sep">|</span>' + esc(r.when) + '</div>' +
+            '<span class="sep">|</span>' + esc(r.when_text) + '</div>' +
           (r.notes ? '<div class="notes">' + esc(r.notes) + '</div>' : "") +
+          contactBlock +
         '</div>' +
         '<div class="card-side">' +
           '<div class="offer">$' + Number(r.offer || 0).toFixed(0) +
             '<small>' + (claimed ? "to driver" : "you keep 100%") + '</small></div>' +
           (claimed
-            ? '<div class="claimedby">' + (mineClaim ? "You claimed this" : "Taken by " + esc(r.claimedName || "a driver")) + '</div>'
+            ? '<div class="claimedby">' + (mineClaim ? "You claimed this" : "Taken by " + esc(r.claimed_name || "a driver")) + '</div>'
             : '<button class="claim" data-id="' + esc(r.id) + '">Claim it</button>') +
         '</div>' +
       '</div>';
@@ -423,90 +623,81 @@
     });
   }
 
-  /* ---- claim, with a real lock ---- */
-  async function claim(id, btn){
-    if (!col) return;
-    var who = (window.prompt("Your first name, so they know who's coming:") || "").trim().slice(0, 24);
-    if (!who) return;
-
-    btn.disabled = true;
-    btn.textContent = "Claiming…";
-    var ref = col.doc(id);
-    try {
-      var lock = await ref.acquire({ holder: me, ttlMs: 8000 });
-      if (!lock.acquired){
-        btn.textContent = "Just taken";
-        return;
-      }
-      var snap = await ref.get();
-      if (!snap.exists || (snap.data() || {}).status === "claimed"){
-        btn.textContent = "Just taken";
-        return;
-      }
-      await ref.update({ status: "claimed", claimedBy: me, claimedName: who });
-    } catch(err){
-      btn.disabled = false;
-      btn.textContent = "Try again";
+  async function load(){
+    var res = await sb.from("requests").select("*")
+      .order("created_at", {ascending:false}).limit(60);
+    if (res.error){
+      $("list").innerHTML = '<div class="empty"><strong>Lost the board.</strong>Reload to reconnect.</div>';
+      return;
     }
+    rows = res.data || [];
+    ready = true;
+    render();
   }
 
-  /* ---- post ---- */
+  async function claim(id, btn){
+    var who = (window.prompt("Your first name, so they know who's coming:") || "").trim().slice(0, 24);
+    if (!who) return;
+    btn.disabled = true;
+    btn.textContent = "Claiming\u2026";
+
+    var res = await sb.from("requests")
+      .update({status:"claimed", claimed_by:me, claimed_name:who})
+      .eq("id", id).eq("status", "open").select();
+
+    if (res.error){
+      btn.disabled = false;
+      btn.textContent = "Try again";
+      return;
+    }
+    if (!res.data || !res.data.length){
+      btn.textContent = "Just taken";
+    }
+    load();
+  }
+
   $("post").addEventListener("click", async function(){
-    if (!col) return;
     var name  = $("fName").value.trim().slice(0,24);
     var from  = $("fFrom").value.trim().slice(0,70);
     var to    = $("fTo").value.trim().slice(0,70);
     var offer = Number($("fOffer").value);
     var errEl = $("postErr");
 
-    if (!from || !to){ errEl.textContent = "Where from and where to — both needed."; return; }
+    if (!from || !to){ errEl.textContent = "Where from and where to - both needed."; return; }
     if (!(offer >= 5)){ errEl.textContent = "Offer at least $5. Minnesota's per-trip floor is $5."; return; }
     errEl.textContent = "";
 
     var btn = $("post");
-    btn.disabled = true; btn.textContent = "Posting…";
-    try {
-      await col.add({
-        kind: kind,
-        name: name || "Someone",
-        from: from, to: to,
-        when: $("fWhen").value,
-        offer: Math.round(offer),
-        notes: $("fNotes").value.trim().slice(0,180),
-        status: "open",
-        postedBy: me,
-        ts: Date.now()
-      });
-      $("fFrom").value = ""; $("fTo").value = ""; $("fOffer").value = ""; $("fNotes").value = "";
-    } catch(err){
-      errEl.textContent = (err && err.code === "quota_exceeded")
-        ? "The board is full — clear some old jobs first."
-        : "That didn't post. Try again in a second.";
+    btn.disabled = true; btn.textContent = "Posting\u2026";
+
+    var res = await sb.from("requests").insert({
+      kind: kind,
+      name: name || "Someone",
+      pickup: from,
+      dropoff: to,
+      when_text: $("fWhen").value,
+      offer: Math.round(offer),
+      notes: $("fNotes").value.trim().slice(0,180),
+      area: $("fArea").value || null,
+      contact: $("fContact").value.trim().slice(0,80) || null,
+      status: "open",
+      posted_by: me
+    });
+
+    if (res.error){
+      errEl.textContent = "That didn't post. Try again in a second.";
+    } else {
+      $("fFrom").value = ""; $("fTo").value = ""; $("fOffer").value = ""; $("fNotes").value = ""; $("fContact").value = "";
+      load();
     }
     btn.disabled = false; btn.textContent = "Post it";
   });
 
-  /* ---- connect ---- */
   render();
-  (async function(){
-    try { db = await window.claude.use("db"); } catch(e){ db = null; }
-    if (!db){
-      $("list").innerHTML = '<div class="empty"><strong>The shared board is unavailable in this view.</strong>' +
-        'Open the published page to post and claim jobs.</div>';
-      $("post").disabled = true;
-      return;
-    }
-    col = db.collection("requests");
-    ready = true;
-    col.orderBy("ts", "desc").limit(60).onSnapshot(function(snap){
-      rows = snap.docs.map(function(d){
-        var o = d.data() || {}; o.id = d.id; return o;
-      });
-      render();
-    }, function(){
-      ready = false;
-      $("list").innerHTML = '<div class="empty"><strong>Lost the board.</strong>Reload to reconnect.</div>';
-    });
-  })();
+  load();
+
+  sb.channel("requests-live")
+    .on("postgres_changes", {event:"*", schema:"public", table:"requests"}, load)
+    .subscribe();
 })();
 </script>

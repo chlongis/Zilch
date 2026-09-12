@@ -1,0 +1,248 @@
+<title>Find a Driver</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#EEF1F4; --surface:#FFFFFF; --surface-2:#E4E9EE;
+    --line:#C8D2DA; --line-soft:#DCE3E9;
+    --text:#0E1620; --text-2:#4A5A68; --text-3:#738796;
+    --accent:#FFB020; --accent-ink:#8A5300;
+    --ok:#1E8A5C; --ok-bg:#D8F0E4;
+    --shadow:0 1px 2px rgba(14,22,32,.05), 0 6px 18px -10px rgba(14,22,32,.16);
+    --radius:4px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#0B1219; --surface:#121C26; --surface-2:#18242F;
+      --line:#2A3946; --line-soft:#1E2C38;
+      --text:#E8EEF3; --text-2:#A3B4C1; --text-3:#6F8494;
+      --accent:#FFB020; --accent-ink:#FFC65C;
+      --ok:#4FCB92; --ok-bg:#123528;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0B1219; --surface:#121C26; --surface-2:#18242F;
+    --line:#2A3946; --line-soft:#1E2C38;
+    --text:#E8EEF3; --text-2:#A3B4C1; --text-3:#6F8494;
+    --accent:#FFB020; --accent-ink:#FFC65C;
+    --ok:#4FCB92; --ok-bg:#123528;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--paper);color:var(--text);
+    font-family:"IBM Plex Sans","Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{margin:0}
+  p{margin:0}
+  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+  .eyebrow{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;
+    font-weight:600;color:var(--text-3);
+  }
+
+  .top{border-bottom:1px solid var(--line);background:var(--surface)}
+  .top-in{max-width:1180px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .wordmark{font-family:Anton,Impact,sans-serif;font-size:23px;letter-spacing:.02em;text-transform:uppercase;line-height:1;text-decoration:none;color:inherit}
+  .wordmark span{color:var(--accent-ink)}
+  .sitenav{display:flex;gap:3px;align-items:center;flex-wrap:wrap}
+  .sitenav a{font-size:13px;font-weight:600;text-decoration:none;padding:7px 12px;
+    color:var(--text-2);border:1px solid transparent;border-radius:3px}
+  .sitenav a:hover{color:var(--text);border-color:var(--line)}
+  .sitenav a[aria-current="page"]{color:var(--text);background:var(--surface-2);border-color:var(--line)}
+
+  .intro{padding:44px 0 28px}
+  .intro h1{font-family:Anton,Impact,sans-serif;text-transform:uppercase;
+    font-size:clamp(32px,6.4vw,54px);line-height:1;margin:12px 0 0}
+  .intro p{margin-top:16px;max-width:58ch;font-size:16.5px;color:var(--text-2)}
+
+  .searchbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  input[type=text],select{
+    font:inherit;font-size:15px;padding:11px 13px;
+    background:var(--surface);color:var(--text);
+    border:1px solid var(--line);border-radius:var(--radius);
+  }
+  #q{flex:1;min-width:220px}
+  #areaSel{min-width:170px}
+  input:focus-visible,select:focus-visible{outline:2px solid var(--accent-ink);outline-offset:1px}
+
+  .count{font-size:13px;color:var(--text-3);margin-bottom:16px}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-bottom:50px}
+  @media (max-width:700px){ .grid{grid-template-columns:1fr} }
+  .dcard{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px;text-decoration:none;color:inherit;display:block;
+  }
+  .dcard:hover{border-color:var(--text-3);box-shadow:var(--shadow)}
+  .dcard:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}
+  .dtop{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+  .dname{font-family:Anton,Impact,sans-serif;text-transform:uppercase;font-size:23px;line-height:1}
+  .dbadge{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9.5px;letter-spacing:.1em;
+    text-transform:uppercase;font-weight:600;padding:3px 8px;border-radius:99px;white-space:nowrap;flex:none;
+  }
+  .dbadge.ok{background:var(--ok-bg);color:var(--ok)}
+  .dbadge.self{background:var(--surface-2);color:var(--text-3);border:1px solid var(--line-soft)}
+  .dveh{font-size:13.5px;color:var(--text-2);margin-top:7px}
+  .dstats{display:flex;gap:16px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  .dstat .n{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;
+    font-size:17px;font-weight:600;line-height:1}
+  .dstat .l{font-size:11px;color:var(--text-3);margin-top:3px}
+
+  .empty{
+    background:var(--surface);border:1px dashed var(--line);border-radius:var(--radius);
+    padding:40px 24px;text-align:center;color:var(--text-2);grid-column:1/-1;
+  }
+  .empty strong{display:block;font-size:16px;color:var(--text);margin-bottom:7px}
+  .empty a{color:var(--accent-ink);font-weight:600}
+
+  footer{padding:24px 0 60px;color:var(--text-3);font-size:12.5px;line-height:1.6}
+  footer p{max-width:76ch;margin-bottom:8px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="top">
+  <div class="top-in">
+    <a class="wordmark" href="index.html">Zil<span>ch</span></a>
+    <nav class="sitenav">
+      <a href="index.html">The pitch</a>
+      <a href="find.html" aria-current="page">Find a driver</a>
+      <a href="claim.html">Claim profile</a>
+      <a href="board.html">Board</a>
+      <a href="paycheck.html">Pay check</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="intro">
+    <span class="eyebrow">Directory</span>
+    <h1>Find your driver</h1>
+    <p>Drivers who've built a profile here. Search by name, car, or area — then reach them directly. No app in the middle, no commission, no surge.</p>
+  </div>
+
+  <div class="searchbar">
+    <input type="text" id="q" placeholder="Name, vehicle, or anything they wrote" autocomplete="off">
+    <select id="areaSel">
+      <option value="">Every area</option>
+      <option value="waconia">Waconia</option>
+      <option value="hopkins">Hopkins</option>
+      <option value="minnetonka">Minnetonka</option>
+      <option value="slp">St. Louis Park</option>
+      <option value="edenprairie">Eden Prairie</option>
+      <option value="plymouth">Plymouth</option>
+      <option value="msp">MSP Airport</option>
+      <option value="minneapolis">Minneapolis</option>
+      <option value="stpaul">Saint Paul</option>
+      <option value="other">Elsewhere in the metro</option>
+    </select>
+  </div>
+
+  <p class="count" id="count"></p>
+  <div class="grid" id="grid"></div>
+</div>
+
+<footer class="wrap">
+  <p>Profiles are created and owned by drivers. Stats marked self-reported have not been checked by anyone — treat them the way you'd treat any claim from a stranger. Zilch takes no commission, arranges no rides, and is not a party to anything you agree with a driver.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var sb = window.supabase.createClient("https://zlvvtaydmaphdnhvmppj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsdnZ0YXlkbWFwaGRuaHZtcHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NzE3MTEsImV4cCI6MjEwNDU0NzcxMX0.t5ILb0-k3auW1Z3Em-gdR11rHURl5N-SVic9q1YDG7k");
+
+  var AREAS = {
+    waconia:"Waconia", hopkins:"Hopkins", minnetonka:"Minnetonka", slp:"St. Louis Park",
+    edenprairie:"Eden Prairie", plymouth:"Plymouth", msp:"MSP Airport",
+    minneapolis:"Minneapolis", stpaul:"Saint Paul", other:"Twin Cities metro"
+  };
+
+  var rows = [], ready = false;
+
+  function esc(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  function render(){
+    var grid = $("grid");
+    if (!ready){
+      grid.innerHTML = '<div class="empty"><strong>Loading drivers…</strong></div>';
+      $("count").textContent = "";
+      return;
+    }
+
+    var term = $("q").value.trim().toLowerCase();
+    var area = $("areaSel").value;
+
+    var shown = rows.filter(function(d){
+      if (area && d.area !== area) return false;
+      if (!term) return true;
+      var hay = [d.name, d.vehicle, d.bio, AREAS[d.area] || d.area, d.platform]
+        .filter(Boolean).join(" ").toLowerCase();
+      return hay.indexOf(term) !== -1;
+    });
+
+    $("count").textContent = shown.length
+      ? shown.length + (shown.length === 1 ? " driver" : " drivers")
+      : "";
+
+    if (!shown.length){
+      grid.innerHTML = '<div class="empty"><strong>' +
+        (rows.length ? "Nobody matches that." : "No drivers yet.") + '</strong>' +
+        (rows.length ? "Try a wider area or a shorter search."
+                     : 'Be the first — <a href="claim.html">claim a profile</a>.') +
+        '</div>';
+      return;
+    }
+
+    grid.innerHTML = shown.map(function(d){
+      var verified = d.verified === "screenshot" || d.verified === "email";
+      return '<a class="dcard" href="d.html?h=' + encodeURIComponent(d.handle) + '">' +
+        '<div class="dtop">' +
+          '<span class="dname">' + esc(d.name) + '</span>' +
+          '<span class="dbadge ' + (verified ? "ok" : "self") + '">' +
+            (verified ? "Verified" : "Self-reported") + '</span>' +
+        '</div>' +
+        '<div class="dveh">' + esc([d.vehicle, AREAS[d.area] || d.area].filter(Boolean).join(" · ")) + '</div>' +
+        '<div class="dstats">' +
+          '<div class="dstat"><div class="n">' + Number(d.trips||0).toLocaleString("en-US") + '</div><div class="l">trips</div></div>' +
+          '<div class="dstat"><div class="n">' + (d.rating ? Number(d.rating).toFixed(2) : "—") + '</div><div class="l">rating</div></div>' +
+          (d.years != null ? '<div class="dstat"><div class="n">' + d.years + '</div><div class="l">years</div></div>' : "") +
+        '</div>' +
+      '</a>';
+    }).join("");
+  }
+
+  $("q").addEventListener("input", render);
+  $("areaSel").addEventListener("change", render);
+
+  async function load(){
+    var res = await sb.from("drivers").select("*")
+      .order("trips", {ascending:false}).limit(300);
+    if (res.error){
+      $("grid").innerHTML = '<div class="empty"><strong>Couldn\'t load the directory.</strong>Reload to try again.</div>';
+      return;
+    }
+    rows = res.data || [];
+    ready = true;
+    render();
+  }
+
+  render();
+  load();
+
+  sb.channel("drivers-live")
+    .on("postgres_changes", {event:"*", schema:"public", table:"drivers"}, load)
+    .subscribe();
+})();
+</script>

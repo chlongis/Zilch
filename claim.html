@@ -1,0 +1,394 @@
+<title>Claim Your Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#EEF1F4; --surface:#FFFFFF; --surface-2:#E4E9EE;
+    --line:#C8D2DA; --line-soft:#DCE3E9;
+    --text:#0E1620; --text-2:#4A5A68; --text-3:#738796;
+    --accent:#FFB020; --accent-ink:#8A5300;
+    --ice:#2F6F9E; --ice-bg:#DCEAF5;
+    --ok:#1E8A5C; --ok-bg:#D8F0E4;
+    --warn:#A8402B;
+    --shadow:0 1px 2px rgba(14,22,32,.05), 0 6px 18px -10px rgba(14,22,32,.16);
+    --radius:4px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#0B1219; --surface:#121C26; --surface-2:#18242F;
+      --line:#2A3946; --line-soft:#1E2C38;
+      --text:#E8EEF3; --text-2:#A3B4C1; --text-3:#6F8494;
+      --accent:#FFB020; --accent-ink:#FFC65C;
+      --ice:#8FC9E8; --ice-bg:#16303F;
+      --ok:#4FCB92; --ok-bg:#123528;
+      --warn:#E5806A;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0B1219; --surface:#121C26; --surface-2:#18242F;
+    --line:#2A3946; --line-soft:#1E2C38;
+    --text:#E8EEF3; --text-2:#A3B4C1; --text-3:#6F8494;
+    --accent:#FFB020; --accent-ink:#FFC65C;
+    --ice:#8FC9E8; --ice-bg:#16303F;
+    --ok:#4FCB92; --ok-bg:#123528;
+    --warn:#E5806A;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--paper);color:var(--text);
+    font-family:"IBM Plex Sans","Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{margin:0}
+  p{margin:0}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px}
+  .eyebrow{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;
+    font-weight:600;color:var(--text-3);
+  }
+
+  .top{border-bottom:1px solid var(--line);background:var(--surface)}
+  .top-in{max-width:1180px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .wordmark{font-family:Anton,Impact,sans-serif;font-size:23px;letter-spacing:.02em;text-transform:uppercase;line-height:1}
+  .wordmark span{color:var(--accent-ink)}
+  .sitenav{display:flex;gap:3px;align-items:center;flex-wrap:wrap}
+  .sitenav a{font-size:13px;font-weight:600;text-decoration:none;padding:7px 12px;
+    color:var(--text-2);border:1px solid transparent;border-radius:3px}
+  .sitenav a:hover{color:var(--text);border-color:var(--line)}
+  .sitenav a[aria-current="page"]{color:var(--text);background:var(--surface-2);border-color:var(--line)}
+
+  .intro{padding:48px 0 34px}
+  .intro h1{font-family:Anton,Impact,sans-serif;text-transform:uppercase;
+    font-size:clamp(34px,7vw,60px);line-height:.98;margin:14px 0 0}
+  .intro h1 em{font-style:normal;color:var(--accent-ink)}
+  .intro p{margin-top:18px;max-width:56ch;font-size:17px;color:var(--text-2)}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:26px;margin-bottom:22px}
+  .card h2{font-size:17px;font-weight:600;margin-bottom:4px}
+  .card .sub{font-size:13.5px;color:var(--text-3);margin-bottom:18px}
+
+  .field{margin-bottom:16px}
+  label.fl{display:block;font-size:13px;font-weight:600;margin-bottom:5px}
+  .hint{font-size:12.5px;color:var(--text-3);margin-bottom:7px;line-height:1.45}
+  input[type=text],input[type=number],select,textarea{
+    font:inherit;font-size:15px;padding:10px 12px;width:100%;
+    background:var(--surface);color:var(--text);
+    border:1px solid var(--line);border-radius:var(--radius);
+  }
+  textarea{resize:vertical;min-height:70px}
+  input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent-ink);outline-offset:1px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:560px){ .two{grid-template-columns:1fr} }
+
+  .upload{
+    border:2px dashed var(--line);border-radius:var(--radius);padding:24px 18px;text-align:center;
+    cursor:pointer;position:relative;
+  }
+  .upload:hover{border-color:var(--text-3)}
+  .upload input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+  .upload .ul{font-size:14.5px;font-weight:600}
+  .upload .us{font-size:12.5px;color:var(--text-3);margin-top:4px}
+  .upload.has{border-color:var(--ok);background:var(--ok-bg)}
+  .upload.has .ul{color:var(--ok)}
+
+  .tierbox{background:var(--surface-2);border:1px solid var(--line-soft);border-radius:var(--radius);
+    padding:14px 16px;font-size:13.5px;color:var(--text-2);line-height:1.5;margin-top:14px}
+  .tierbox b{color:var(--text)}
+
+  .go{
+    font-family:Anton,Impact,sans-serif;text-transform:uppercase;letter-spacing:.045em;
+    font-size:19px;padding:15px 22px;cursor:pointer;width:100%;
+    background:#0E1620;color:#F7FAFC;border:1px solid #0E1620;border-radius:var(--radius);
+  }
+  :root[data-theme="dark"] .go{background:var(--accent);color:#0E1620;border-color:var(--accent)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .go{background:var(--accent);color:#0E1620;border-color:var(--accent)}}
+  .go:hover{opacity:.88}
+  .go:disabled{opacity:.4;cursor:default}
+  .err{font-size:13.5px;color:var(--warn);min-height:1.2em;margin-top:10px}
+
+  /* success */
+  .done{display:none}
+  .done.show{display:block}
+  .form.hide{display:none}
+  .linkbox{
+    background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius);
+    padding:14px 16px;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:14px;
+    word-break:break-all;margin:14px 0;
+  }
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .btn{
+    font:inherit;font-size:14px;font-weight:600;padding:10px 17px;cursor:pointer;
+    background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:var(--radius);
+    text-decoration:none;display:inline-block;
+  }
+  .btn:hover{border-color:var(--text-3)}
+  .btn.pri{background:var(--accent);border-color:var(--accent);color:#0E1620}
+
+  footer{padding:30px 0 60px;color:var(--text-3);font-size:12.5px;line-height:1.6}
+  footer p{max-width:76ch;margin-bottom:8px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="top">
+  <div class="top-in">
+    <span class="wordmark">Zil<span>ch</span></span>
+    <nav class="sitenav">
+      <a href="index.html">The pitch</a>
+      <a href="claim.html" aria-current="page">Claim profile</a>
+      <a href="find.html">Find a driver</a>
+      <a href="board.html">Board</a>
+      <a href="paycheck.html">Pay check</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="intro">
+    <span class="eyebrow">For drivers</span>
+    <h1>Your record.<br>Your <em>name</em>.</h1>
+    <p>Six thousand trips at 4.97 and none of it is yours — it lives in an app you don't control and disappears the day they deactivate you. Build a profile you own and hand out to anyone.</p>
+  </div>
+
+  <div class="form" id="form">
+    <div class="card">
+      <h2>Who you are</h2>
+      <p class="sub">First name only. Riders recognize a face and a car, not a last name.</p>
+
+      <div class="two">
+        <div class="field">
+          <label class="fl" for="fName">First name</label>
+          <input type="text" id="fName" maxlength="24" placeholder="Dmitri" autocomplete="off">
+        </div>
+        <div class="field">
+          <label class="fl" for="fArea">Main area</label>
+          <select id="fArea">
+            <option value="">Pick one</option>
+            <option value="waconia">Waconia</option>
+            <option value="hopkins">Hopkins</option>
+            <option value="minnetonka">Minnetonka</option>
+            <option value="slp">St. Louis Park</option>
+            <option value="edenprairie">Eden Prairie</option>
+            <option value="plymouth">Plymouth</option>
+            <option value="msp">MSP Airport</option>
+            <option value="minneapolis">Minneapolis</option>
+            <option value="stpaul">Saint Paul</option>
+            <option value="other">Elsewhere in the metro</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="fl" for="fVehicle">Vehicle</label>
+        <p class="hint">What riders look for at the curb.</p>
+        <input type="text" id="fVehicle" maxlength="50" placeholder="Gray Toyota RAV4" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label class="fl" for="fBio">Anything worth knowing</label>
+        <p class="hint">Car seat, wheelchair accessible, speaks Somali, does 4am airport runs. Optional.</p>
+        <textarea id="fBio" maxlength="200" placeholder="Early mornings and airport runs. Car seat available if you ask ahead."></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Your record</h2>
+      <p class="sub">Pull these from your driver app. Numbers you can't back up will get flagged by riders, so keep them straight.</p>
+
+      <div class="two">
+        <div class="field">
+          <label class="fl" for="fTrips">Completed trips</label>
+          <input type="number" id="fTrips" min="0" step="1" placeholder="6042">
+        </div>
+        <div class="field">
+          <label class="fl" for="fRating">Rating</label>
+          <input type="number" id="fRating" min="1" max="5" step="0.01" placeholder="4.97">
+        </div>
+      </div>
+
+      <div class="two">
+        <div class="field">
+          <label class="fl" for="fYears">Years driving</label>
+          <input type="number" id="fYears" min="0" max="30" step="1" placeholder="4">
+        </div>
+        <div class="field">
+          <label class="fl" for="fPlatform">Where you drive</label>
+          <select id="fPlatform">
+            <option value="">Pick one</option>
+            <option>Uber</option>
+            <option>Lyft</option>
+            <option>Uber and Lyft</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Proof</h2>
+      <p class="sub">A screenshot of your stats screen. Riders see whether a profile is backed by anything.</p>
+
+      <div class="upload" id="uz">
+        <input type="file" id="fProof" accept="image/*,.pdf">
+        <div class="ul" id="uzL">Tap to add a screenshot</div>
+        <div class="us" id="uzS">JPG, PNG or PDF &middot; optional</div>
+      </div>
+
+      <div class="tierbox">
+        <b>Verified</b> means a screenshot is attached and the numbers match it. <b>Self-reported</b> means nobody has checked. Both are allowed and both are labeled on your profile, so riders can decide for themselves.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>How riders reach you</h2>
+      <p class="sub">Shown on your profile. Use a number you're fine giving out — a Google Voice line works well.</p>
+
+      <div class="two">
+        <div class="field">
+          <label class="fl" for="fCType">Method</label>
+          <select id="fCType">
+            <option value="text">Text message</option>
+            <option value="call">Phone call</option>
+            <option value="signal">Signal</option>
+            <option value="whatsapp">WhatsApp</option>
+            <option value="email">Email</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="fl" for="fCVal">Where</label>
+          <input type="text" id="fCVal" maxlength="60" placeholder="612-555-0100" autocomplete="off">
+        </div>
+      </div>
+    </div>
+
+    <button class="go" id="submit">Create my profile</button>
+    <p class="err" id="err"></p>
+  </div>
+
+  <div class="done" id="done">
+    <div class="card">
+      <h2 style="font-family:Anton,Impact,sans-serif;text-transform:uppercase;font-size:26px;margin-bottom:10px">Profile is live</h2>
+      <p style="color:var(--text-2);margin-bottom:4px">This link is yours. It doesn't expire, and nobody can deactivate it.</p>
+      <div class="linkbox" id="liveLink">&mdash;</div>
+      <div class="btnrow">
+        <a class="btn pri" id="goProfile" href="#">Open my profile</a>
+        <button class="btn" id="copyLink">Copy link</button>
+      </div>
+      <p style="font-size:13.5px;color:var(--text-3);margin-top:16px">Your profile page has the QR code, a printable card and every other way to hand this out.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="wrap">
+  <p>Zilch doesn't take a cut of anything and isn't a party to rides you arrange. Profiles are created and owned by drivers.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var sb = window.supabase.createClient("https://zlvvtaydmaphdnhvmppj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsdnZ0YXlkbWFwaGRuaHZtcHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NzE3MTEsImV4cCI6MjEwNDU0NzcxMX0.t5ILb0-k3auW1Z3Em-gdR11rHURl5N-SVic9q1YDG7k");
+
+  var ME_KEY = "zilch.me.v1", me;
+  try { me = localStorage.getItem(ME_KEY); } catch(e){}
+  if (!me){
+    me = "u" + Math.random().toString(36).slice(2, 10);
+    try { localStorage.setItem(ME_KEY, me); } catch(e){}
+  }
+
+  var proofFile = null;
+  $("fProof").addEventListener("change", function(e){
+    var f = e.target.files[0];
+    if (!f) return;
+    proofFile = f;
+    $("uzL").textContent = f.name;
+    $("uzS").textContent = (f.size/1024).toFixed(0) + " KB attached";
+    $("uz").classList.add("has");
+  });
+
+  function slug(s){
+    return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"").slice(0,14) || "driver";
+  }
+
+  $("submit").addEventListener("click", async function(){
+    var name    = $("fName").value.trim().slice(0,24);
+    var area    = $("fArea").value;
+    var vehicle = $("fVehicle").value.trim().slice(0,50);
+    var trips   = parseInt($("fTrips").value, 10);
+    var rating  = parseFloat($("fRating").value);
+    var years   = parseInt($("fYears").value, 10);
+    var plat    = $("fPlatform").value;
+    var cval    = $("fCVal").value.trim().slice(0,60);
+    var e = $("err");
+
+    if (!name){ e.textContent = "First name is needed — it's what riders remember."; return; }
+    if (!area){ e.textContent = "Pick your main area."; return; }
+    if (!vehicle){ e.textContent = "Add your vehicle so riders can spot you."; return; }
+    if (isNaN(trips) || trips < 0){ e.textContent = "Trip count is needed."; return; }
+    if (isNaN(rating) || rating < 1 || rating > 5){ e.textContent = "Rating should be between 1 and 5."; return; }
+    if (!cval){ e.textContent = "Riders need some way to reach you."; return; }
+    e.textContent = "";
+
+    var btn = $("submit");
+    btn.disabled = true; btn.textContent = "Creating…";
+
+    var handle = slug(name) + "-" + Math.random().toString(36).slice(2,6);
+    var proofPath = null;
+
+    if (proofFile){
+      var ext = (proofFile.name.split(".").pop() || "jpg").toLowerCase();
+      var up = await sb.storage.from("proof").upload(handle + "." + ext, proofFile, {upsert:true});
+      if (!up.error) proofPath = up.data ? up.data.path : (handle + "." + ext);
+    }
+
+    var res = await sb.from("drivers").insert({
+      handle: handle,
+      name: name,
+      area: area,
+      vehicle: vehicle,
+      bio: $("fBio").value.trim().slice(0,200) || null,
+      trips: trips,
+      rating: rating,
+      years: isNaN(years) ? null : years,
+      platform: plat || null,
+      contact_type: $("fCType").value,
+      contact_value: cval,
+      proof_path: proofPath,
+      verified: proofPath ? "screenshot" : "self",
+      owner_key: me
+    }).select();
+
+    if (res.error){
+      e.textContent = "That didn't save. Try again in a second.";
+      btn.disabled = false; btn.textContent = "Create my profile";
+      return;
+    }
+
+    try {
+      var mine = JSON.parse(localStorage.getItem("zilch.profiles.v1") || "[]");
+      mine.push(handle);
+      localStorage.setItem("zilch.profiles.v1", JSON.stringify(mine));
+    } catch(err){}
+
+    var url = location.origin + location.pathname.replace(/claim\.html$/, "") + "d.html?h=" + handle;
+    $("liveLink").textContent = url;
+    $("goProfile").href = "d.html?h=" + handle;
+    $("form").classList.add("hide");
+    $("done").classList.add("show");
+    window.scrollTo(0,0);
+
+    $("copyLink").addEventListener("click", function(){
+      navigator.clipboard.writeText(url).then(function(){
+        $("copyLink").textContent = "Copied";
+        setTimeout(function(){ $("copyLink").textContent = "Copy link"; }, 1600);
+      });
+    });
+  });
+})();
+</script>
